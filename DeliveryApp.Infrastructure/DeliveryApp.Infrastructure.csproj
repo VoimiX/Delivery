@@ -12,4 +12,10 @@
       <ProjectReference Include="..\Utils\Primitives\Primitives.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Grpc\" />
+      <Folder Include="Kafka\" />
+      <Folder Include="Postgres\" />
+    </ItemGroup>
+
 </Project>
