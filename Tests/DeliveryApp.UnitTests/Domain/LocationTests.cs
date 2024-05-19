@@ -10,7 +10,7 @@ public class LocationTests
     [MemberData(nameof(Data))]
     public void TestLocationCalculation(Location a, Location b, int expectedDistance)
     {
-        Assert.True(a.CalculateDistance(b) == expectedDistance);
+        Assert.True(a.DistanceTo(b) == expectedDistance);
     }
 
     public static IEnumerable<object[]> Data =>

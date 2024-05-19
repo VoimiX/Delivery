@@ -25,7 +25,7 @@ public record Location
     public int X { get; }
     public int Y { get; }
 
-    public int CalculateDistance(Location otherLocation)
+    public int DistanceTo(Location otherLocation)
     {
         if (otherLocation == null)
             throw new ArgumentNullException(nameof(otherLocation));
