@@ -13,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Application\" />
-      <Folder Include="Domain\" />
       <Folder Include="DomainServices\" />
       <Folder Include="Ports\" />
     </ItemGroup>
