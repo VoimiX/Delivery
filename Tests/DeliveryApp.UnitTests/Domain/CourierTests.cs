@@ -26,9 +26,8 @@ public class CourierTests
 
         courier.AssignOrder(order);
         courier.Order.Should().Be(order);
-        courier.Status.Should().Be(CourierStatus.Busy);
-        courier.Order.Should().NotBeNull();
         courier.Order.Status.Should().Be(OrderStatus.Assigned);
+        courier.Status.Should().Be(CourierStatus.Busy);        
 
         courier.StepsDistanceToOrder.Should().NotBeNull();
         courier.StepsDistanceToOrder.Value.Should().BeApproximately(
@@ -60,9 +59,8 @@ public class CourierTests
 
         courier.AssignOrder(order);
         courier.Order.Should().Be(order);
-        courier.Status.Should().Be(CourierStatus.Busy);
-        courier.Order.Should().NotBeNull();
         courier.Order.Status.Should().Be(OrderStatus.Assigned);
+        courier.Status.Should().Be(CourierStatus.Busy);
 
         courier.StepsDistanceToOrder.Should().NotBeNull();
         courier.StepsDistanceToOrder.Value.Should().BeApproximately(
