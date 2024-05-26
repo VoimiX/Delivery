@@ -91,21 +91,21 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             var restSpeed = Transport.Speed;
 
             var diffX = Location.X - Order.Location.X;
-            var x = diffX > 0 ? 1 : -1;
+            var x = diffX > 0 ? -1 : 1;
             
             int distX = Math.Min(Math.Abs(diffX), restSpeed);
             
             restSpeed = restSpeed - distX;
 
-            newX = Location.X + distX * -1 * x;
+            newX = Location.X + distX * x;
 
             if (restSpeed > 0)
             {
                 var diffY = Location.Y - Order.Location.Y;
-                var y = diffY > 0 ? 1 : -1;
+                var y = diffY > 0 ? -1 : 1;
 
                 int distY = Math.Min(Math.Abs(diffY), restSpeed);
-                newY = Location.Y + distY * -1 * y;
+                newY = Location.Y + distY *  y;
             }
 
             Location = new Location(newX, newY);
