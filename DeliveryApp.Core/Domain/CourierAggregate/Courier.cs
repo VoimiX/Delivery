@@ -34,7 +34,7 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
                 throw new DeliveryException("Курьер занят, невозможно начать работу.");
             }
 
-            Status = CourierStatus.Ready;            
+            Status = CourierStatus.Ready;
         }
 
         public void EndWork()
@@ -47,6 +47,13 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             {
                 throw new DeliveryException("Курьер недоступен, невозможно завершить работу.");
             }
+
+            Status = CourierStatus.NotAvailable;
+        }
+
+        public void MakeStepToOrder()
+        {
+
         }
     }
 }

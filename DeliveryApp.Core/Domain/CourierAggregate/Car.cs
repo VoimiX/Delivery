@@ -9,9 +9,6 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         {
         }
 
-        public override bool CanHandleWeight(Weight weight)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

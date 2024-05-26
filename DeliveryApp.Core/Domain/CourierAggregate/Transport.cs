@@ -18,6 +18,9 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         public int Speed { get; }
         public Weight Capacity { get; }
 
-        public abstract bool CanHandleWeight(Weight weight);
+        public bool CanHandleWeight(Weight weight)
+        {
+            return weight <= Capacity;
+        }
     }
 }

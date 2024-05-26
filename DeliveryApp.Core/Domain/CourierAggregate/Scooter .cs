@@ -8,9 +8,5 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             : base(id, name, speed: 3, capacity: new Weight(6))
         {
         }
-        public override bool CanHandleWeight(Weight weight)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
