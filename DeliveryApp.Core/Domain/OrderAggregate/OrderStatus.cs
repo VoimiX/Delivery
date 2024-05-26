@@ -1,16 +1,9 @@
-﻿using DeliveryApp.Core.Attributes;
-
-namespace DeliveryApp.Core.Domain.OrderAggregate
+﻿namespace DeliveryApp.Core.Domain.OrderAggregate
 {
     public enum OrderStatus
     {
-        [ItemValue(1)]
-        Created,
-
-        [ItemValue(2)]
-        Assigned,
-
-        [ItemValue(3)]
-        Completed
+        Created = 1,
+        Assigned = 2,
+        Completed = 3
     }
 }
