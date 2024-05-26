@@ -42,6 +42,12 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         public void AssignOrder(Order order)
         {
             if (order == null) throw new ArgumentNullException(nameof(order));
+
+            if (!Transport.CanHandleWeight(order.Weight))
+            {
+                throw new DeliveryException($"Транспорт курьера {Transport} не позволяет по весу перевозить такой заказ.");
+            }
+
             order.AssignToCourier(this);
 
             Order = order;
@@ -73,36 +79,36 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
         public void MakeStepToOrder()
         {
-            if (Status != CourierStatus.Ready)
+            if (Status == CourierStatus.NotAvailable)
             {
-                throw new DeliveryException($"Невозможно сделать шаг к заказу, неверный статус курьера ({Status}). " +
-                    $"Для шага нужен статус {CourierStatus.Ready}");
+                throw new DeliveryException($"Невозможно сделать шаг к заказу, неверный статус курьера ({Status}).");
             }
 
-            //var restSpeed = Transport.Speed;
+            Status = CourierStatus.Busy;
+
+            int newX = Location.X, newY = Location.Y;
+
+            var restSpeed = Transport.Speed;
 
             var diffX = Location.X - Order.Location.X;
-            var diffY = Location.Y - Order.Location.Y;
+            var x = diffX > 0 ? 1 : -1;
+            
+            int distX = Math.Min(Math.Abs(diffX), restSpeed);
+            
+            restSpeed = restSpeed - distX;
 
-            //restSpeed -= Math.Abs(diffX) - Transport.Speed;
-            //if (restSpeed < 0) restSpeed = 0;
-            //if (restSpeed > 0)
-            //{
-            //    restSpeed -= Math.Abs(diffY) - Transport.Speed;
-            //}
+            newX = Location.X + distX * -1 * x;
 
-            //if (diffX > 0)
-            //{
-                
-            //}
+            if (restSpeed > 0)
+            {
+                var diffY = Location.Y - Order.Location.Y;
+                var y = diffY > 0 ? 1 : -1;
 
-            //if (restSpeed > 0)
-            //{
+                int distY = Math.Min(Math.Abs(diffY), restSpeed);
+                newY = Location.Y + distY * -1 * y;
+            }
 
-            //}
-
-            //Location = new Location(Location.X + Transport.Speed, Location.Y + );
-
+            Location = new Location(newX, newY);
 
             if (Location == Order.Location)
             {
