@@ -1,7 +1,9 @@
 ﻿
+using CSharpFunctionalExtensions;
+
 namespace DeliveryApp.Core.Domain.SharedKernel;
 
-public record Location
+public class Location : ValueObject
 {
     public Location(int x, int y)
     {
@@ -31,5 +33,11 @@ public record Location
             throw new ArgumentNullException(nameof(otherLocation));
 
         return Math.Abs(X - otherLocation.X) + Math.Abs(Y - otherLocation.Y);
+    }
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return X;
+        yield return Y;
     }
 }
