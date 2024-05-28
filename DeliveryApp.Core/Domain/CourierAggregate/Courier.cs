@@ -1,12 +1,13 @@
 ﻿using DeliveryApp.Core.Domain.Exceptions;
 using DeliveryApp.Core.Domain.SharedKernel;
 using DeliveryApp.Core.Domain.OrderAggregate;
+using Primitives;
 
 namespace DeliveryApp.Core.Domain.CourierAggregate
 {
-    public class Courier
+    public class Courier : Aggregate
     {
-        public Courier(int id, string name, Transport transport)
+        public Courier(Guid id, string name, Transport transport)
         {
             Id = id;
             Name = name;
@@ -17,21 +18,22 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
         private Courier() { }
 
-        public int Id { get; }
         public string Name { get; }
         public Transport Transport { get; }
         public Location Location { get; private set; }
         public CourierStatus Status { get; private set; }
-        public Order Order { get; private set; }
-        public float? StepsDistanceToOrder
-        {
-            get
-            {
-                if (Order == null) return null;
+        public Guid OrderId { get; private set; }
 
-                var steps = (float)Location.DistanceTo(Order.Location) / Transport.Speed;
-                return steps;
-            }
+        public float? GetStepsDistanceToOrder(Order order)
+        {
+            if (order == null) throw new ArgumentNullException(nameof(order));
+            if (order.Id != OrderId) throw new DeliveryException("Неправильный заказ для расчета дистанции до курьера");
+
+            if (Location == null) return null;
+
+            var steps = (float)Location.DistanceTo(order.Location) / Transport.Speed;
+            return steps;
+
         }
 
         public void SetStatus(CourierStatus status)
@@ -42,15 +44,13 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         public void AssignOrder(Order order)
         {
             if (order == null) throw new ArgumentNullException(nameof(order));
-
             if (!Transport.CanHandleWeight(order.Weight))
             {
                 throw new DeliveryException($"Транспорт курьера {Transport} не позволяет по весу перевозить такой заказ.");
             }
 
             order.AssignToCourier(this);
-
-            Order = order;
+            OrderId = order.Id;
         }
 
         public void StartWork()
@@ -77,11 +77,20 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             Status = CourierStatus.NotAvailable;
         }
 
-        public void MakeStepToOrder()
+        public void MakeStepToOrder(Order order)
         {
+            if (order == null) throw new ArgumentNullException(nameof(order));
+            if (order.Id != OrderId) throw new DeliveryException("Передан неверный заказ для шага к заказу");
+
             if (Status == CourierStatus.NotAvailable)
             {
                 throw new DeliveryException($"Невозможно сделать шаг к заказу, неверный статус курьера ({Status}).");
+            }
+
+            if (order.Location == Location)
+            {
+                Status = CourierStatus.Ready;
+                order.Complete(this);
             }
 
             Status = CourierStatus.Busy;
@@ -90,30 +99,30 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
             var restSpeed = Transport.Speed;
 
-            var diffX = Location.X - Order.Location.X;
+            var diffX = Location.X - order.Location.X;
             var x = diffX > 0 ? -1 : 1;
-            
+
             int distX = Math.Min(Math.Abs(diffX), restSpeed);
-            
+
             restSpeed = restSpeed - distX;
 
             newX = Location.X + distX * x;
 
             if (restSpeed > 0)
             {
-                var diffY = Location.Y - Order.Location.Y;
+                var diffY = Location.Y - order.Location.Y;
                 var y = diffY > 0 ? -1 : 1;
 
                 int distY = Math.Min(Math.Abs(diffY), restSpeed);
-                newY = Location.Y + distY *  y;
+                newY = Location.Y + distY * y;
             }
 
             Location = new Location(newX, newY);
 
-            if (Location == Order.Location)
+            if (Location == order.Location)
             {
                 Status = CourierStatus.Ready;
-                Order.Complete();
+                order.Complete(this);
             }
         }
     }

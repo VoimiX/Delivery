@@ -22,27 +22,32 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
             Status = OrderStatus.Created;
         }
 
-        public Courier Courier { get; private set; }
+        public Guid CourierId { get; private set; }
         public Location Location { get; }
         public Weight Weight { get; }
         public OrderStatus Status { get; private set; }
 
         public void AssignToCourier(Courier courier)
         {
-            Courier = courier;
+            if (courier == null) throw new ArgumentNullException(nameof (courier));
+
             Status = OrderStatus.Assigned;
             courier.SetStatus(CourierStatus.Busy);
+            CourierId = courier.Id;
         }
 
-        public void Complete()
+        public void Complete(Courier courier)
         {
+            if (courier == null) throw new ArgumentNullException(nameof(courier));
+            if (courier.Id != CourierId) throw new DeliveryException("Неверный курьер для завершения заказа");
+
             if (Status != OrderStatus.Assigned)
             {
                 throw new DeliveryException("Завершить можно только назначенный ранее заказ");
-            }
+            }            
 
-            Status = OrderStatus.Completed;            
-            Courier.SetStatus(CourierStatus.Ready);
+            Status = OrderStatus.Completed;
+            courier.SetStatus(CourierStatus.Ready);
         }
     }
 }
