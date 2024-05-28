@@ -83,6 +83,10 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             {
                 throw new DeliveryException($"Невозможно сделать шаг к заказу, неверный статус курьера ({Status}).");
             }
+            if (order.Status != OrderStatus.Assigned)
+            {
+                throw new DeliveryException($"Невозможно сделать шаг к заказу, неверный статус заказа ({order.Status}).");
+            }
 
             if (order.Location == Location)
             {
