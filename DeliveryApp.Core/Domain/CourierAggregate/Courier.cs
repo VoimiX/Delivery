@@ -9,6 +9,10 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
     {
         public Courier(Guid id, string name, Transport transport)
         {
+            if (id == Guid.Empty) throw new ArgumentException("Empty parameter", nameof(id));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+            if (transport == null) throw new ArgumentNullException(nameof(transport));
+
             Id = id;
             Name = name;
             Transport = transport;
