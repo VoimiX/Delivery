@@ -24,14 +24,11 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         public CourierStatus Status { get; private set; }
         public Guid OrderId { get; private set; }
 
-        public float? GetStepsDistanceToOrder(Order order)
+        public float GetStepsDistanceToOrder(Location orderLocation)
         {
-            if (order == null) throw new ArgumentNullException(nameof(order));
-            if (order.Id != OrderId) throw new DeliveryException("Неправильный заказ для расчета дистанции до курьера");
+            if (orderLocation == null) throw new ArgumentNullException(nameof(orderLocation));
 
-            if (Location == null) return null;
-
-            var steps = (float)Location.DistanceTo(order.Location) / Transport.Speed;
+            var steps = (float)Location.DistanceTo(orderLocation) / Transport.Speed;
             return steps;
 
         }

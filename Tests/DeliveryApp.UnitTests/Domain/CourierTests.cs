@@ -33,8 +33,7 @@ public class CourierTests
         order.Status.Should().Be(OrderStatus.Assigned);
         courier.Status.Should().Be(CourierStatus.Busy);
 
-        courier.GetStepsDistanceToOrder(order).Should().NotBeNull();
-        courier.GetStepsDistanceToOrder(order).Should().BeApproximately(
+        courier.GetStepsDistanceToOrder(order.Location).Should().BeApproximately(
             (float)courier.Location.DistanceTo(order.Location) / courier.Transport.Speed, precision: 2);
 
         courier.MakeStepToOrder(order);
@@ -69,8 +68,7 @@ public class CourierTests
         order.Status.Should().Be(OrderStatus.Assigned);
         courier.Status.Should().Be(CourierStatus.Busy);
 
-        courier.GetStepsDistanceToOrder(order).Should().NotBeNull();
-        courier.GetStepsDistanceToOrder(order).Value.Should().BeApproximately(
+        courier.GetStepsDistanceToOrder(order.Location).Should().BeApproximately(
             (float)courier.Location.DistanceTo(order.Location) / courier.Transport.Speed, precision: 2);
 
         courier.MakeStepToOrder(order);
