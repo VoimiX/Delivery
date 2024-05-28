@@ -11,6 +11,10 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
 
         public Order(Guid id, Location location, Weight weight)
         {
+            if (id == Guid.Empty) throw new ArgumentException("Empty paramater", nameof(id));
+            if (location == null) throw new ArgumentNullException(nameof(location));
+            if (weight == null) throw new ArgumentNullException(nameof(weight));
+
             Id = id;
             Location = location;
             Weight = weight;
