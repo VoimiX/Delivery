@@ -17,4 +17,8 @@
       <Folder Include="Ports\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CSharpFunctionalExtensions" Version="2.42.0" />
+    </ItemGroup>
+
 </Project>

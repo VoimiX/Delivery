@@ -1,6 +1,8 @@
-﻿namespace DeliveryApp.Core.Domain.SharedKernel;
+﻿using CSharpFunctionalExtensions;
 
-public record Weight
+namespace DeliveryApp.Core.Domain.SharedKernel;
+
+public class Weight : ValueObject
 {
     public Weight(int kilograms)
     {
@@ -19,5 +21,10 @@ public record Weight
     public static bool operator > (Weight a, Weight b) => a.Kilograms > b.Kilograms;
     public static bool operator < (Weight a, Weight b) => a.Kilograms < b.Kilograms;
     public static bool operator >= (Weight a, Weight b) => a.Kilograms >= b.Kilograms;
-    public static bool operator <=(Weight a, Weight b) => a.Kilograms <= b.Kilograms;
+    public static bool operator <=(Weight a, Weight b) => a.Kilograms <= b.Kilograms;   
+
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Kilograms;
+    }
 }
