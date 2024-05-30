@@ -14,7 +14,6 @@
     <ItemGroup>
       <Folder Include="Application\" />
       <Folder Include="DomainServices\" />
-      <Folder Include="Ports\" />
     </ItemGroup>
 
     <ItemGroup>
