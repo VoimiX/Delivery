@@ -27,7 +27,20 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         {
             get
             {
-                throw new NotImplementedException();
+                var assembly = typeof(Transport).Assembly;
+                var types = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Transport))).ToList();
+
+                var list = new List<Transport>();
+                foreach (var type in types)
+                {
+                    int id = types.IndexOf(type) + 1;
+                    string name = type.Name;
+                    Transport instance = (Transport)Activator.CreateInstance(
+                        type, new object[] { id, name });
+                    list.Add(instance);
+                }
+
+                return list.ToArray();
             }
         }
     }
