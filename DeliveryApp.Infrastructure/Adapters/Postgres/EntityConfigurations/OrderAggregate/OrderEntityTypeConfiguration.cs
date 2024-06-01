@@ -24,10 +24,9 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Orde
                 .IsRequired(false);
 
             entityTypeBuilder
-                .HasOne(entity => entity.OrderStatus)
-                .WithMany()
-                .IsRequired()
-                .HasForeignKey("status_id");
+                .Property(entity => entity.Status)
+                .HasColumnName("status")
+                .IsRequired();
 
             entityTypeBuilder
                 .OwnsOne(entity => entity.Location, l =>
@@ -40,7 +39,7 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Orde
             entityTypeBuilder
                 .OwnsOne(entity => entity.Weight, w =>
                 {
-                    w.Property(c => c.Value).HasColumnName("weight").IsRequired();
+                    w.Property(c => c.Kilograms).HasColumnName("weight").IsRequired();
                     w.WithOwner();
                 });
         }

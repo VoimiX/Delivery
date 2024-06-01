@@ -30,10 +30,8 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Cour
                 .HasForeignKey("transport_id");
 
             entityTypeBuilder
-                .HasOne(entity => entity.Status)
-                .WithMany()
-                .IsRequired()
-                .HasForeignKey("status_id");
+                .Property(entity => entity.Status)
+                .IsRequired();
 
 
             entityTypeBuilder
