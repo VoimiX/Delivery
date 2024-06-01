@@ -1,6 +1,6 @@
 ﻿using DeliveryApp.Core.Ports;
 
-namespace DeliveryApp.Infrastructure.Postgres;
+namespace DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 
 public class CourierRepository : ICourierRepository
 {
