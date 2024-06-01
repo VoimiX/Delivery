@@ -26,7 +26,6 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync(o => o.Id == id);
 
         return order;
-
     }
 
     public async Task<Order[]> GetOrdersAssigned()
