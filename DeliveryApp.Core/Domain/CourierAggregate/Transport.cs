@@ -22,5 +22,13 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         {
             return weight <= Capacity;
         }
+
+        public static Transport[] All
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

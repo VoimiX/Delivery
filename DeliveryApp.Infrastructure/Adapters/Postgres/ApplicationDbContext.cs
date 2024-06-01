@@ -19,32 +19,16 @@ public class ApplicationDbContext : DbContext
     {
         // Order Aggregate
         modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new OrderStatusEntityTypeConfiguration());
-
-        // Order statuses
-        modelBuilder.Entity<OrderStatus>(b =>
-        {
-            var allStatuses = OrderStatus.List();
-            b.HasData(allStatuses.Select(c => new {c.Id, c.Name}));
-        });
-
 
         modelBuilder.ApplyConfiguration(new CourierEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new CourierStatusEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TransportEntityTypeConfiguration());
-
-        // Courier statuses
-        modelBuilder.Entity<CourierStatus>(b =>
-        {
-            var allStatuses = CourierStatus.List();
-            b.HasData(allStatuses.Select(c => new {c.Id, c.Name}));
-        });
+        
 
         // Courier transports
         modelBuilder.Entity<Transport>(b =>
         {
-            var allTransports = Transport.List();
-            b.HasData(allTransports.Select(c => new {c.Id, c.Name, c.Speed, c.Capacity.Value}));
+            var allTransports = Transport.All;
+            b.HasData(allTransports.Select(c => new {c.Id, c.Name, c.Speed, c.Capacity.Kilograms}));
         });
     }
 }
