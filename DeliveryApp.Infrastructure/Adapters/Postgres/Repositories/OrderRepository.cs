@@ -15,7 +15,8 @@ public class OrderRepository : IOrderRepository
 
     public Task<Order> AddOrder(Order order)
     {
-        return Task.FromResult(_dbContext.Orders.Add(order).Entity);
+        var entity = _dbContext.Orders.Add(order).Entity;
+        return Task.FromResult(entity);
     }
 
     public async Task<Order> GetOrder(Guid id)

@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\DeliveryApp.Core\DeliveryApp.Core.csproj" />
+      <ProjectReference Include="..\..\DeliveryApp.Infrastructure\DeliveryApp.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -15,7 +15,8 @@ public class CourierRepository : ICourierRepository
 
     public Task<Courier> AddCourier(Courier courier)
     {
-        return Task.FromResult(_dbContext.Couriers.Add(courier).Entity);
+        var entity = _dbContext.Couriers.Add(courier).Entity;
+        return Task.FromResult(entity);
     }
 
     public async Task<Courier> GetCourier(Guid id)
