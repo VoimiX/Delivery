@@ -35,8 +35,8 @@ public class CourierRepositoryShould : IAsyncLifetime
     [Fact]
     public async Task CanSaveCourier()
     {
-        var transport = new Pedestrian(id: 45, name: "Василий Васильев");
-        Courier courier = new Courier(id: Guid.NewGuid(), name: "Василий Пешеход", transport);        
+        var transport = Transport.All.Single(t => t.Name == typeof(Car).Name);
+        Courier courier = new Courier(id: Guid.NewGuid(), name: "Василий", transport);        
 
         var courierRepository = new CourierRepository(_context);
         await courierRepository.AddCourier(courier);
