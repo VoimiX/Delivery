@@ -15,6 +15,11 @@ public class ApplicationDbContext : DbContext
     {
     }
 
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    optionsBuilder.UseNpgsql("postgresql://postgres:secret@localhost:5433");
+    //}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Order Aggregate

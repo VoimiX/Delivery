@@ -1,3 +1,5 @@
+using DeliveryApp.Infrastructure.Adapters.Postgres;
+
 namespace DeliveryApp.Api
 {
     public class Startup
@@ -36,6 +38,8 @@ namespace DeliveryApp.Api
             var connectionString = Configuration["CONNECTION_STRING"];
             var geoServiceGrpcHost = Configuration["GEO_SERVICE_GRPC_HOST"];
             var messageBrokerHost = Configuration["MESSAGE_BROKER_HOST"];
+
+            services.AddDbContext<ApplicationDbContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
