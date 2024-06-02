@@ -1,5 +1,4 @@
-﻿using DeliveryApp.Core.Domain.CourierAggregate;
-using DeliveryApp.Core.Domain.SharedKernel;
+﻿using DeliveryApp.Core.Domain.SharedKernel;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using FluentAssertions;
