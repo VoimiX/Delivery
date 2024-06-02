@@ -1,4 +1,5 @@
 ﻿using DeliveryApp.Core.Domain.CourierAggregate;
+using DeliveryApp.Core.Domain.SharedKernel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,11 +30,10 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Cour
                 .IsRequired();
 
             entityTypeBuilder
-                .OwnsOne(entity => entity.Capacity, c =>
-                {
-                    c.Property(v => v.Kilograms).HasColumnName("capacity").IsRequired();
-                    c.WithOwner();
-                });
+                .Property(entity => entity.Capacity)
+                .HasColumnName("capacity")
+                .IsRequired()
+                .HasConversion(x => x.Kilograms, x => new Weight(x));
         }
     }
 }

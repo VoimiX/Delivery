@@ -33,6 +33,7 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Cour
                 .Property(entity => entity.Status)
                 .IsRequired();
 
+            entityTypeBuilder.Ignore(x => x.OrderId);
 
             entityTypeBuilder
                 .OwnsOne(entity => entity.Location, l =>

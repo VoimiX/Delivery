@@ -15,6 +15,7 @@ public class CourierRepository : ICourierRepository
 
     public Task<Courier> AddCourier(Courier courier)
     {
+        if (courier.Transport != null) _dbContext.Attach(courier.Transport);
         var entity = _dbContext.Couriers.Add(courier).Entity;
         return Task.FromResult(entity);
     }

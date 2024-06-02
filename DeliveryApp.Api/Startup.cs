@@ -1,4 +1,5 @@
 using DeliveryApp.Infrastructure.Adapters.Postgres;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryApp.Api
 {
@@ -38,8 +39,8 @@ namespace DeliveryApp.Api
             var connectionString = Configuration["CONNECTION_STRING"];
             var geoServiceGrpcHost = Configuration["GEO_SERVICE_GRPC_HOST"];
             var messageBrokerHost = Configuration["MESSAGE_BROKER_HOST"];
-
-            services.AddDbContext<ApplicationDbContext>();
+            
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

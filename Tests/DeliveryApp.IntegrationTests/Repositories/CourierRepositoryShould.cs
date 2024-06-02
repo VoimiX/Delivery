@@ -11,7 +11,6 @@ namespace DeliveryApp.Integration.Repositories;
 public class CourierRepositoryShould : IAsyncLifetime
 {
     private ApplicationDbContext _context;
-    private readonly Courier _courier;
 
     /// <summary>
     /// Настройка Postgres из библиотеки TestContainers
@@ -27,13 +26,11 @@ public class CourierRepositoryShould : IAsyncLifetime
 
     /// <remarks>Вызывается один раз перед всеми тестами в рамках этого класса</remarks>
     public CourierRepositoryShould()
-    {
-        //var courierCreateResult = new Courier(new Guid(""), "Gazel", new Car());
-
+    {       
     }
 
     [Fact]
-    public async Task CanSaveCourier()
+    public async Task Can_Save_Courier()
     {
         var transportCar = Transport.All.Single(t => t.Name == typeof(Car).Name);
         Courier courier = new Courier(id: Guid.NewGuid(), name: "Василий", transportCar);        
@@ -47,7 +44,6 @@ public class CourierRepositoryShould : IAsyncLifetime
         var courierFromdb = await courierRepository.GetCourier(courier.Id);
         courierFromdb.Should().BeEquivalentTo(courier);
     }
-
 
     public async Task InitializeAsync()
     {

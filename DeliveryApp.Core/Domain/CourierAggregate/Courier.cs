@@ -2,6 +2,8 @@
 using DeliveryApp.Core.Domain.SharedKernel;
 using DeliveryApp.Core.Domain.OrderAggregate;
 using Primitives;
+using System.Runtime.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeliveryApp.Core.Domain.CourierAggregate
 {
@@ -26,7 +28,7 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         public Transport Transport { get; }
         public Location Location { get; private set; }
         public CourierStatus Status { get; private set; }
-        public Guid OrderId { get; private set; }
+        public Guid? OrderId { get; private set; }
 
         public float GetStepsDistanceToOrder(Location orderLocation)
         {
@@ -34,7 +36,6 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
             var steps = (float)Location.DistanceTo(orderLocation) / Transport.Speed;
             return steps;
-
         }
 
         public void SetStatus(CourierStatus status)

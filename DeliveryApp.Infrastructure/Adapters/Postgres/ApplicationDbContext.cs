@@ -15,25 +15,24 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    optionsBuilder.UseNpgsql("postgresql://postgres:secret@localhost:5433");
-    //}
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Car>();
+        modelBuilder.Entity<Pedestrian>();
+        modelBuilder.Entity<Scooter>();
+        modelBuilder.Entity<Bicycle>();
+
         // Order Aggregate
         modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
 
         modelBuilder.ApplyConfiguration(new CourierEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TransportEntityTypeConfiguration());
-        
 
         // Courier transports
         modelBuilder.Entity<Transport>(b =>
         {
             var allTransports = Transport.All;
-            b.HasData(allTransports.Select(c => new {c.Id, c.Name, c.Speed, c.Capacity.Kilograms}));
+            b.HasData(allTransports.Select(c => new { c.Id, c.Name, c.Speed, c.Capacity }));
         });
     }
 }
