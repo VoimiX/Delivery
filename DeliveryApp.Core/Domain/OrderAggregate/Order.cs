@@ -22,7 +22,7 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
             Status = OrderStatus.Created;
         }
 
-        public Guid CourierId { get; private set; }
+        public Guid? CourierId { get; private set; }
         public Location Location { get; }
         public Weight Weight { get; }
         public OrderStatus Status { get; private set; }
