@@ -1,5 +1,8 @@
+using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
+using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Primitives;
 
 namespace DeliveryApp.Api
 {
@@ -39,7 +42,15 @@ namespace DeliveryApp.Api
             var connectionString = Configuration["CONNECTION_STRING"];
             var geoServiceGrpcHost = Configuration["GEO_SERVICE_GRPC_HOST"];
             var messageBrokerHost = Configuration["MESSAGE_BROKER_HOST"];
-            
+
+            // UnitOfWork
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            // Ports & Adapters
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<ICourierRepository, CourierRepository>();
+
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
         }
 

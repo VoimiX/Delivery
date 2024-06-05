@@ -2,8 +2,6 @@
 using DeliveryApp.Core.Domain.SharedKernel;
 using DeliveryApp.Core.Domain.OrderAggregate;
 using Primitives;
-using System.Runtime.Serialization;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeliveryApp.Core.Domain.CourierAggregate
 {
