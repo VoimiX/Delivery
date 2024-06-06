@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\UseCases\Commands\Orders\Dto\" />
+      <Folder Include="Application\UseCases\Commands\Couriers\MoveCourier\" />
     </ItemGroup>
 
 </Project>

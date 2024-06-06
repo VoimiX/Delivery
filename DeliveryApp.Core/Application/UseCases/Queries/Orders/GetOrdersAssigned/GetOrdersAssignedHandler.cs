@@ -24,7 +24,7 @@ public class GetOrdersAssignedHandler : IRequestHandler<GetGetOrdersAssignedQuer
 
         var result = await connection.QueryAsync<dynamic>(
             @"SELECT *
-                    FROM public.orders where statu=@status");
+                    FROM public.orders where status =@status");
 
         return new GetOrdersAssignedResponse(MapOrders(result));
     }
