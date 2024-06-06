@@ -1,4 +1,4 @@
-﻿namespace DeliveryApp.Core.Application.UseCases.Commands.Couriers.AssignOrder;
+﻿namespace DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
 
 public class AssignOrderResponse
 {

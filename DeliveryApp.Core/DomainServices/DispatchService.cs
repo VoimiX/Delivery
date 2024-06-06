@@ -24,6 +24,8 @@ public class DispatchService : IDispatchService
             }
         }
 
+        bestCourier.AssignOrder(order);
+
         return Task.FromResult(bestCourier);
     }
 }

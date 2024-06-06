@@ -1,9 +1,8 @@
-﻿using DeliveryApp.Core.Domain.OrderAggregate;
-using DeliveryApp.Core.Domain.SharedKernel;
+﻿using DeliveryApp.Core.Domain.SharedKernel;
 using DeliveryApp.Core.Ports;
 using MediatR;
 
-namespace DeliveryApp.Core.Application.UseCases.Commands.Orders.CreateOrder;
+namespace DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
 
 public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderResponse>
 {
@@ -16,9 +15,9 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Cre
 
     public async Task<CreateOrderResponse> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var createdOrder =  await _orderRepository.AddOrder(new Order
+        var createdOrder =  await _orderRepository.AddOrder(new Domain.OrderAggregate.Order
             (
-                request.Id, new Location(request.LocationX, request.LocationY), new Domain.SharedKernel.Weight(request.Weight))
+                request.Id, new Location(request.LocationX, request.LocationY), new Weight(request.Weight))
             );
 
         return new CreateOrderResponse(createdOrder.Id);

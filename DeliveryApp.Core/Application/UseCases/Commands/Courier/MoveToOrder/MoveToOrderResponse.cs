@@ -1,6 +1,6 @@
 ﻿using DeliveryApp.Core.Domain.SharedKernel;
 
-namespace DeliveryApp.Core.Application.UseCases.Commands.Couriers.MoveToOrder;
+namespace DeliveryApp.Core.Application.UseCases.Commands.Courier.MoveToOrder;
 
 public class MoveToOrderResponse
 {

@@ -1,4 +1,4 @@
-﻿namespace DeliveryApp.Core.Application.UseCases.Commands.Orders.CreateOrder;
+﻿namespace DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
 
 public class CreateOrderResponse
 {

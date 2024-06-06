@@ -3,7 +3,7 @@ using DeliveryApp.Core.Ports;
 using MediatR;
 using Primitives;
 
-namespace DeliveryApp.Core.Application.UseCases.Commands.Couriers.MoveToOrder;
+namespace DeliveryApp.Core.Application.UseCases.Commands.Courier.MoveToOrder;
 
 public class MoveToOrderCommandHandler : IRequestHandler<MoveToOrderCommand, MoveToOrderResponse>
 {
