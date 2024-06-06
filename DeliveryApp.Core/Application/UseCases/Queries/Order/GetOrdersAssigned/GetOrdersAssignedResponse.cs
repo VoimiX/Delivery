@@ -1,6 +1,6 @@
-﻿using DeliveryApp.Core.Application.UseCases.Queries.Orders.Dto;
+﻿using DeliveryApp.Core.Application.UseCases.Queries.Order.Dto;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.GetOrdersAssigned;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
 
 public class GetOrdersAssignedResponse
 {

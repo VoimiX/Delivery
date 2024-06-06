@@ -1,10 +1,10 @@
 ﻿using Dapper;
-using DeliveryApp.Core.Application.UseCases.Queries.Orders.Dto;
+using DeliveryApp.Core.Application.UseCases.Queries.Order.Dto;
 using DeliveryApp.Core.Domain.SharedKernel;
 using MediatR;
 using Npgsql;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.GetOrdersAssigned;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
 
 public class GetOrdersAssignedHandler : IRequestHandler<GetGetOrdersAssignedQuery, GetOrdersAssignedResponse>
 {

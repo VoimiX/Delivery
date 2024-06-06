@@ -1,6 +1,6 @@
 ﻿using DeliveryApp.Core.Domain.SharedKernel;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.Dto;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Order.Dto;
 
 public class OrderDto
 {

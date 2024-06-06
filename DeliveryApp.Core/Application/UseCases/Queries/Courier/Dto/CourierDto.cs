@@ -1,5 +1,5 @@
 ﻿
-namespace DeliveryApp.Core.Application.UseCases.Queries.Couriers.Dto;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Courier.Dto;
 
 public class CourierDto
 {

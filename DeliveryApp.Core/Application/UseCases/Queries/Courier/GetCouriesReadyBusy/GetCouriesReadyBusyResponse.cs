@@ -1,7 +1,7 @@
-﻿using DeliveryApp.Core.Application.UseCases.Queries.Couriers.Dto;
+﻿using DeliveryApp.Core.Application.UseCases.Queries.Courier.Dto;
 using MediatR;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.Couriers.GetCouriesReadyBusy;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Courier.GetCouriesReadyBusy;
 
 public class GetCouriesReadyBusyResponse : IRequest<GetCouriesReadyBusyResponse>
 {

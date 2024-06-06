@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.GetOrdersAssigned;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
 
 public class GetGetOrdersAssignedQuery : IRequest<GetOrdersAssignedResponse>
 {

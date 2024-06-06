@@ -1,10 +1,10 @@
 ﻿using Dapper;
-using DeliveryApp.Core.Application.UseCases.Queries.Couriers.Dto;
+using DeliveryApp.Core.Application.UseCases.Queries.Courier.Dto;
 using DeliveryApp.Core.Domain.SharedKernel;
 using MediatR;
 using Npgsql;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.Couriers.GetCouriesReadyBusy;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Courier.GetCouriesReadyBusy;
 
 public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQuery, GetCouriesReadyBusyResponse>
 {
