@@ -1,16 +1,16 @@
 ﻿using Dapper;
-using DeliveryApp.Core.Application.UseCases.Queries.Orders.Dto;
+using DeliveryApp.Core.Application.UseCases.Queries.Couriers.Dto;
 using DeliveryApp.Core.Domain.SharedKernel;
 using MediatR;
 using Npgsql;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.GetOrdersNew;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Couriers.GetCouriesReadyBusy;
 
-public class GetOrdersNewHandler : IRequestHandler<GetGetOrdersNewQuery, GetOrdersNewResponse>
+public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQuery, GetCouriesReadyBusyResponse>
 {
     private readonly string _connectionString;
 
-    public GetOrdersNewHandler(string connectionString)
+    public GetCouriesReadyBusyHandler(string connectionString)
     {
         _connectionString = !string.IsNullOrWhiteSpace(connectionString)
             ? connectionString
@@ -18,7 +18,7 @@ public class GetOrdersNewHandler : IRequestHandler<GetGetOrdersNewQuery, GetOrde
     }
 
 
-    public async Task<GetOrdersNewResponse> Handle(GetGetOrdersNewQuery request, CancellationToken cancellationToken)
+    public async Task<GetCouriesReadyBusyResponse> Handle(GetCouriesReadyBusyQuery request, CancellationToken cancellationToken)
     {
         using var connection = new NpgsqlConnection(_connectionString);
         connection.Open();
@@ -27,16 +27,16 @@ public class GetOrdersNewHandler : IRequestHandler<GetGetOrdersNewQuery, GetOrde
             @"SELECT *
                     FROM public.orders where statu=@status");
 
-        return new GetOrdersNewResponse(MapOrders(result));
+        return new GetCouriesReadyBusyResponse(MapCouriers(result));
 
     }
 
-    private List<OrderDto> MapOrders(IEnumerable<dynamic> result)
+    private List<CourierDto> MapCouriers(IEnumerable<dynamic> result)
     {
-        var orders = new List<OrderDto>();
+        var orders = new List<CourierDto>();
         foreach (var item in result)
         {
-            var order = new OrderDto(item.id, new Location(item.x, item.y), new Weight(item.Weight), item.status);
+            var order = new CourierDto(item.id, item.name);
             orders.Add(order);
         }
 

@@ -18,4 +18,8 @@
       <PackageReference Include="Npgsql" Version="8.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Application\UseCases\Commands\Orders\Dto\" />
+    </ItemGroup>
+
 </Project>

@@ -17,7 +17,6 @@ public class GetOrdersAssignedHandler : IRequestHandler<GetGetOrdersAssignedQuer
             : throw new ArgumentNullException(nameof(connectionString));
     }
 
-
     public async Task<GetOrdersAssignedResponse> Handle(GetGetOrdersAssignedQuery request, CancellationToken cancellationToken)
     {
         using var connection = new NpgsqlConnection(_connectionString);
@@ -28,7 +27,6 @@ public class GetOrdersAssignedHandler : IRequestHandler<GetGetOrdersAssignedQuer
                     FROM public.orders where statu=@status");
 
         return new GetOrdersAssignedResponse(MapOrders(result));
-
     }
 
     private List<OrderDto> MapOrders(IEnumerable<dynamic> result)
@@ -36,7 +34,7 @@ public class GetOrdersAssignedHandler : IRequestHandler<GetGetOrdersAssignedQuer
         var orders = new List<OrderDto>();
         foreach (var item in result)
         {
-            var order = new OrderDto(item.id, new Location(item.x, item.y), new Weight(item.Weight), item.status);
+            var order = new OrderDto(item.id, new Location(item.x, item.y), new Weight(item.Weight));
             orders.Add(order);
         }
 
