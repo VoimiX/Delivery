@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using DeliveryApp.Core.Application.UseCases.Queries.Courier.Dto;
-using DeliveryApp.Core.Domain.SharedKernel;
 using MediatR;
 using Npgsql;
 
@@ -25,7 +24,7 @@ public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQue
 
         var result = await connection.QueryAsync<dynamic>(
             @"SELECT *
-                    FROM public.orders where statu=@status");
+                    FROM public.couriers where status=@status1 or status=@status2");
 
         return new GetCouriesReadyBusyResponse(MapCouriers(result));
 
