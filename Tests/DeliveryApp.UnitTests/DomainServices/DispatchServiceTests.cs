@@ -1,4 +1,5 @@
 ﻿using DeliveryApp.Core.Domain.CourierAggregate;
+using DeliveryApp.Core.Domain.Exceptions;
 using DeliveryApp.Core.Domain.OrderAggregate;
 using DeliveryApp.Core.Domain.SharedKernel;
 using DeliveryApp.Core.DomainServices;
@@ -25,6 +26,7 @@ public class DispatchServiceTests
 
         bestCourier.Should().NotBeNull();
         bestCourier.Should().Be(courierCar);
+        bestCourier.OrderId.Should().Be(order.Id);
     }
 
     [Fact]
@@ -36,8 +38,10 @@ public class DispatchServiceTests
         Order order = new Order(Guid.NewGuid(), new Location(2, 5), new Weight(100));
 
         var dispatchService = new DispatchService();
-        var bestCourier = await dispatchService.Dispatch(order, new[] { courierPed, courierScooter });
+              
 
-        bestCourier.Should().BeNull();
+        await Assert.ThrowsAsync<DeliveryException>(() =>         
+             dispatchService.Dispatch(order, new[] { courierPed, courierScooter })
+        );
     }
 }

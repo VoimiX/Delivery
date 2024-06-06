@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DeliveryApp.Core.Application.UseCases.Queries.Courier.Dto;
+using DeliveryApp.Core.Domain.CourierAggregate;
 using MediatR;
 using Npgsql;
 
@@ -16,18 +17,24 @@ public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQue
             : throw new ArgumentNullException(nameof(connectionString));
     }
 
-
+    /// <summary>
+    /// Получить готовых и занятых курьеров.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<GetCouriesReadyBusyResponse> Handle(GetCouriesReadyBusyQuery request, CancellationToken cancellationToken)
     {
         using var connection = new NpgsqlConnection(_connectionString);
         connection.Open();
 
         var result = await connection.QueryAsync<dynamic>(
-            @"SELECT *
-                    FROM public.couriers where status=@status1 or status=@status2");
+            @"select id, name
+                    FROM public.couriers where status=@status_busy or status=@status_ready",
+            new { status_busy = (int)CourierStatus.Busy, status_ready = (int)CourierStatus.Ready}
+            );
 
         return new GetCouriesReadyBusyResponse(MapCouriers(result));
-
     }
 
     private List<CourierDto> MapCouriers(IEnumerable<dynamic> result)

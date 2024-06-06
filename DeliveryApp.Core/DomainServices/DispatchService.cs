@@ -1,4 +1,5 @@
 ﻿using DeliveryApp.Core.Domain.CourierAggregate;
+using DeliveryApp.Core.Domain.Exceptions;
 using DeliveryApp.Core.Domain.OrderAggregate;
 
 namespace DeliveryApp.Core.DomainServices;
@@ -23,6 +24,8 @@ public class DispatchService : IDispatchService
                 minSteps = steps;
             }
         }
+
+        if (bestCourier == null) throw new DeliveryException("Не найден подходящий курьер для перевозки заказа");
 
         bestCourier.AssignOrder(order);
 

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using DeliveryApp.Core.Application.UseCases.Queries.Order.Dto;
+using DeliveryApp.Core.Domain.OrderAggregate;
 using DeliveryApp.Core.Domain.SharedKernel;
 using MediatR;
 using Npgsql;
@@ -17,14 +18,21 @@ public class GetOrdersAssignedHandler : IRequestHandler<GetGetOrdersAssignedQuer
             : throw new ArgumentNullException(nameof(connectionString));
     }
 
+    /// <summary>
+    /// Получаить все незавершенные заказы.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<GetOrdersAssignedResponse> Handle(GetGetOrdersAssignedQuery request, CancellationToken cancellationToken)
     {
         using var connection = new NpgsqlConnection(_connectionString);
         connection.Open();
 
         var result = await connection.QueryAsync<dynamic>(
-            @"SELECT *
-                    FROM public.orders where status =@status");
+            @"select id, location_x, location_y, weight
+                    from public.orders o 
+                    where status <> @status", new { status = (int)OrderStatus.Completed  });
 
         return new GetOrdersAssignedResponse(MapOrders(result));
     }
@@ -34,7 +42,10 @@ public class GetOrdersAssignedHandler : IRequestHandler<GetGetOrdersAssignedQuer
         var orders = new List<OrderDto>();
         foreach (var item in result)
         {
-            var order = new OrderDto(item.id, new Location(item.x, item.y), new Weight(item.Weight));
+            var order = new OrderDto(
+                item.id,
+                new Location(item.location_x, item.location_y), new Weight(item.weight));
+
             orders.Add(order);
         }
 
