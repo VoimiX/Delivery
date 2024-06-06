@@ -1,7 +1,6 @@
-﻿
-using DeliveryApp.Core.Domain.SharedKernel;
+﻿using DeliveryApp.Core.Domain.SharedKernel;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.GetOrdersNew.Dto;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.Dto;
 
 public class OrderDto
 {

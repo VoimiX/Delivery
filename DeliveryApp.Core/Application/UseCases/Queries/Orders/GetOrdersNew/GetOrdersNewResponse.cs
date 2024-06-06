@@ -1,7 +1,7 @@
-﻿using DeliveryApp.Core.Application.UseCases.Queries.GetOrdersNew.Dto;
+﻿using DeliveryApp.Core.Application.UseCases.Queries.Orders.Dto;
 using MediatR;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.GetOrdersNew;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.GetOrdersNew;
 
 public class GetOrdersNewResponse : IRequest<GetOrdersNewResponse>
 {

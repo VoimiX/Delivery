@@ -1,10 +1,10 @@
 ﻿using Dapper;
-using DeliveryApp.Core.Application.UseCases.Queries.GetOrdersNew.Dto;
+using DeliveryApp.Core.Application.UseCases.Queries.Orders.Dto;
 using DeliveryApp.Core.Domain.SharedKernel;
 using MediatR;
 using Npgsql;
 
-namespace DeliveryApp.Core.Application.UseCases.Queries.GetOrdersNew;
+namespace DeliveryApp.Core.Application.UseCases.Queries.Orders.GetOrdersNew;
 
 public class GetOrdersNewHandler : IRequestHandler<GetGetOrdersNewQuery, GetOrdersNewResponse>
 {
