@@ -19,6 +19,10 @@ public class DispatchServiceTests
         var courierPed = new Courier(Guid.NewGuid(), "courier2", new Pedestrian(4, "Petr Petrovich"));
         var courierScooter = new Courier(Guid.NewGuid(), "courier3", new Scooter(7, "Moped1"));
 
+        courierCar.StartWork();
+        courierPed.StartWork();
+        courierScooter.StartWork();
+
         Order order = new Order(Guid.NewGuid(), new Location(2, 5), new Weight(5));
 
         var dispatchService = new DispatchService();
@@ -34,13 +38,15 @@ public class DispatchServiceTests
     {        
         var courierPed = new Courier(Guid.NewGuid(), "courier2", new Pedestrian(4, "Petr Petrovich"));
         var courierScooter = new Courier(Guid.NewGuid(), "courier3", new Scooter(7, "Moped1"));
+        courierPed.StartWork();
+        courierScooter.StartWork();
 
         Order order = new Order(Guid.NewGuid(), new Location(2, 5), new Weight(100));
 
         var dispatchService = new DispatchService();
               
 
-        await Assert.ThrowsAsync<DeliveryException>(() =>         
+        await Assert.ThrowsAsync<DeliveryException>(() =>
              dispatchService.Dispatch(order, new[] { courierPed, courierScooter })
         );
     }

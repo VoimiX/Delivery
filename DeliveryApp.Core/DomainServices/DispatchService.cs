@@ -8,6 +8,11 @@ public class DispatchService : IDispatchService
 {
     public Task<Courier> Dispatch(Order order, IReadOnlyList<Courier> couriers)
     {
+        if (couriers.Any(c => c.Status != CourierStatus.Ready))
+        {
+            throw new DeliveryException("В списке курьеров есть как минимум один неактивный");
+        }
+
         if (couriers.Count == 0)  throw new ArgumentException("Пустой список курьеров" , nameof(couriers)); 
 
         Courier bestCourier = null;
