@@ -43,7 +43,7 @@ public class AssignOrderCommandShould
 
         var command = new AssignOrderCommand(courierId, orderId);
         var handler =
-            new AssignOrderCommandHandler(_unitOfWork, _courierRepositoryMock, _orderRepositoryMock);
+            new AssignOrderHandler(_unitOfWork, _courierRepositoryMock, _orderRepositoryMock);
 
         //Act
         await handler.Handle(command, CancellationToken.None);

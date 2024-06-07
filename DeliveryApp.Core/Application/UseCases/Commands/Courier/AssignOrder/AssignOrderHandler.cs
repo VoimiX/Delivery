@@ -5,13 +5,13 @@ using Primitives;
 
 namespace DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
 
-public class AssignOrderCommandHandler : IRequestHandler<AssignOrderCommand, AssignOrderResponse>
+public class AssignOrderHandler : IRequestHandler<AssignOrderCommand, AssignOrderResponse>
 {
     private readonly ICourierRepository _courierRepository;
     private readonly IOrderRepository _orderRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public AssignOrderCommandHandler(IUnitOfWork unitOfWork, ICourierRepository courierRepository, IOrderRepository orderRepository)
+    public AssignOrderHandler(IUnitOfWork unitOfWork, ICourierRepository courierRepository, IOrderRepository orderRepository)
     {
         _unitOfWork = unitOfWork;
         _courierRepository = courierRepository;

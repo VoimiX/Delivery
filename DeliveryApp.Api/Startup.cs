@@ -64,9 +64,9 @@ namespace DeliveryApp.Api
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
 
             // Commands
-            services.AddTransient<IRequestHandler<CreateOrderCommand, CreateOrderResponse>, CreateOrderCommandHandler>();
-            services.AddTransient<IRequestHandler<MoveToOrderCommand, MoveToOrderResponse>, MoveToOrderCommandHandler>();
-            services.AddTransient<IRequestHandler<AssignOrderCommand, AssignOrderResponse>, AssignOrderCommandHandler>();
+            services.AddTransient<IRequestHandler<CreateOrderCommand, CreateOrderResponse>, CreateOrderHandler>();
+            services.AddTransient<IRequestHandler<MoveToOrderCommand, MoveToOrderResponse>, MoveToOrderHandler>();
+            services.AddTransient<IRequestHandler<AssignOrderCommand, AssignOrderResponse>, AssignOrderHandler>();
            
             // Queries
             services.AddTransient<IRequestHandler<GetCouriesReadyBusyQuery, GetCouriesReadyBusyResponse>>(_ =>

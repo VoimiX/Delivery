@@ -4,11 +4,11 @@ using MediatR;
 
 namespace DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
 
-public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderResponse>
+public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, CreateOrderResponse>
 {
     private readonly IOrderRepository _orderRepository;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository)
+    public CreateOrderHandler(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
