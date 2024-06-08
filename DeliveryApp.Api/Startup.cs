@@ -1,6 +1,13 @@
+using DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
+using DeliveryApp.Core.Application.UseCases.Commands.Courier.MoveToOrder;
+using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
+using DeliveryApp.Core.Application.UseCases.Queries.Courier.GetCouriesReadyBusy;
+using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
+using DeliveryApp.Core.DomainServices;
 using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Primitives;
 
@@ -49,6 +56,24 @@ namespace DeliveryApp.Api
             // Ports & Adapters
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ICourierRepository, CourierRepository>();
+
+            // Domain Services
+            services.AddTransient<IDispatchService, DispatchService>();
+
+            // MediatR 
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
+
+            // Commands
+            services.AddTransient<IRequestHandler<CreateOrderCommand, CreateOrderResponse>, CreateOrderHandler>();
+            services.AddTransient<IRequestHandler<MoveToOrderCommand, MoveToOrderResponse>, MoveToOrderHandler>();
+            services.AddTransient<IRequestHandler<AssignOrderCommand, AssignOrderResponse>, AssignOrderHandler>();
+           
+            // Queries
+            services.AddTransient<IRequestHandler<GetCouriesReadyBusyQuery, GetCouriesReadyBusyResponse>>(_ =>
+                new GetCouriesReadyBusyHandler(connectionString));
+            services.AddTransient<IRequestHandler<GetGetOrdersAssignedQuery, GetOrdersAssignedResponse>>(_ =>
+                new GetOrdersAssignedHandler(connectionString));
+
 
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
