@@ -2,6 +2,7 @@
 using DeliveryApp.Core.Domain.CourierAggregate;
 using DeliveryApp.Core.Domain.OrderAggregate;
 using DeliveryApp.Core.Domain.SharedKernel;
+using DeliveryApp.Core.DomainServices;
 using DeliveryApp.Core.Ports;
 using NSubstitute;
 using Primitives;
@@ -29,11 +30,21 @@ public class AssignOrderCommandShould
     public async Task UpdateOrderAndSaveEntities()
     {
         //Arrange
-        var courierId = Guid.NewGuid();
+
         var orderId = Guid.NewGuid();
 
-        _courierRepositoryMock.GetCourier(Arg.Any<Guid>())
-            .Returns(Task.FromResult(new Courier(courierId, "Petr Petrov", new Car(12, "Ford Ttransit"))));
+        var courierIdCar = Guid.NewGuid();
+        var courierIdPed = Guid.NewGuid();
+
+        var curierCar = new Courier(courierIdCar, "Petr Petrov", new Car(12, "Ford Ttransit"));
+        curierCar.SetStatus(CourierStatus.Ready);
+        _courierRepositoryMock.GetCourier(courierIdCar)
+            .Returns(Task.FromResult(curierCar));
+
+        var courierPed = new Courier(courierIdPed, "Petr Petrov", new Pedestrian(188, "Petr Petrov"));
+        courierPed.SetStatus(CourierStatus.Ready);
+        _courierRepositoryMock.GetCourier(courierIdPed)
+            .Returns(Task.FromResult(courierPed));
 
         _orderRepositoryMock.GetOrder(Arg.Any<Guid>())
             .Returns(Task.FromResult(new Order(orderId, new Location(5, 8), new Weight(10))));
@@ -41,9 +52,11 @@ public class AssignOrderCommandShould
         _unitOfWork.SaveEntitiesAsync()
             .Returns(Task.FromResult(true));
 
-        var command = new AssignOrderCommand(courierId, orderId);
+        var dispatchService = new DispatchService();
+
+        var command = new AssignOrderCommand(new[] { courierIdCar, courierIdPed }, orderId);
         var handler =
-            new AssignOrderHandler(_unitOfWork, _courierRepositoryMock, _orderRepositoryMock);
+            new AssignOrderHandler(_unitOfWork, _courierRepositoryMock, _orderRepositoryMock, dispatchService);
 
         //Act
         await handler.Handle(command, CancellationToken.None);

@@ -4,13 +4,13 @@ namespace DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder
 {
     public class AssignOrderCommand : IRequest<AssignOrderResponse>
     {
-        public AssignOrderCommand(Guid courierId, Guid orderId)
+        public AssignOrderCommand(IReadOnlyList<Guid> couriers, Guid orderId)
         {
-            CourierId = courierId;
+            Couriers = couriers;
             OrderId = orderId;
         }
 
-        public Guid CourierId { get; }
+        public IReadOnlyList<Guid> Couriers { get; }
         public Guid OrderId { get; }
     }
 }
