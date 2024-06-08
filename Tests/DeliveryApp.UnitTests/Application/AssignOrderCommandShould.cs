@@ -47,7 +47,7 @@ public class AssignOrderCommandShould
             .Returns(Task.FromResult(courierPed));
 
         _orderRepositoryMock.GetOrder(Arg.Any<Guid>())
-            .Returns(Task.FromResult(new Order(orderId, new Location(5, 8), new Weight(10))));
+            .Returns(Task.FromResult(new Order(orderId, new Location(5, 8), new Weight(8))));
 
         _unitOfWork.SaveEntitiesAsync()
             .Returns(Task.FromResult(true));
