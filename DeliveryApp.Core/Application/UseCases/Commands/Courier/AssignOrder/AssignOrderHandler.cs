@@ -41,6 +41,7 @@ public class AssignOrderHandler : IRequestHandler<AssignOrderCommand, AssignOrde
 
         var bestCourier = await _dispatchService.Dispatch(order, couriers);
        
+        await _courierRepository.UpdateCourier(bestCourier);
         await _orderRepository.UpdateOrder(order);
 
         await _unitOfWork.SaveEntitiesAsync();

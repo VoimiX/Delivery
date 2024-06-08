@@ -30,8 +30,12 @@ public class MoveToOrderHandler : IRequestHandler<MoveToOrderCommand, MoveToOrde
             if (order == null) throw new DeliveryException($"Заказ не найден по id={courier.OrderId}");
 
             courier.MakeStepToOrder(order);
+            if (order.Status == Domain.OrderAggregate.OrderStatus.Completed)
+            {
+                await _orderRepository.UpdateOrder(order);
+            }
 
-            await _courierRepository.UpdateCourier(courier);            
+            await _courierRepository.UpdateCourier(courier);
         }
         await _unitOfWork.SaveEntitiesAsync();
 
