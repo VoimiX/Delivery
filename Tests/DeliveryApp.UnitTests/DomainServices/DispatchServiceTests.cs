@@ -44,10 +44,9 @@ public class DispatchServiceTests
         Order order = new Order(Guid.NewGuid(), new Location(2, 5), new Weight(100));
 
         var dispatchService = new DispatchService();
-              
 
-        await Assert.ThrowsAsync<DeliveryException>(() =>
-             dispatchService.Dispatch(order, new[] { courierPed, courierScooter })
-        );
+        var bestCourier = await dispatchService.Dispatch(order, new[] { courierPed, courierScooter });
+
+       bestCourier.Should().BeNull();
     }
 }

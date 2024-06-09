@@ -51,6 +51,7 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
             order.AssignToCourier(this);
             OrderId = order.Id;
+            SetStatus(CourierStatus.Busy);
         }
 
         public void StartWork()

@@ -33,7 +33,19 @@ public class CourierRepository : ICourierRepository
     {
         var couriers = await _dbContext
            .Couriers
+           .Include(c => c.Transport)
            .Where(o => o.Status == CourierStatus.Ready)
+           .ToArrayAsync();
+
+        return couriers;
+    }
+
+    public async Task<Courier[]> GetAssignedCouriers()
+    {
+        var couriers = await _dbContext
+           .Couriers
+           .Include(c => c.Transport)
+           .Where(o => o.Status == CourierStatus.Busy)
            .ToArrayAsync();
 
         return couriers;

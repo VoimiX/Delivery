@@ -30,7 +30,7 @@ public class DispatchService : IDispatchService
             }
         }
 
-        if (bestCourier == null) throw new DeliveryException("Не найден подходящий курьер для перевозки заказа");
+        if (bestCourier == null) return Task.FromResult((Courier)null);
 
         bestCourier.AssignOrder(order);
 
