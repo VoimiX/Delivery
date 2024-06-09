@@ -1,5 +1,6 @@
 ﻿using Api.Controllers;
 using Api.Models;
+using DeliveryApp.Api.Mappers;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.EndWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.StartWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
@@ -8,7 +9,6 @@ using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
 
 namespace DeliveryApp.Api.Controllers;
 
@@ -23,15 +23,7 @@ public class DeliveryController : DefaultApiController
 
     public override async Task<IActionResult> CreateOrder()
     {
-        int randomvalue;
-        using (var rg = new RNGCryptoServiceProvider())
-        {
-            byte[] rno = new byte[5];
-            rg.GetBytes(rno);
-            randomvalue = BitConverter.ToInt32(rno, 0);
-        }
-
-        var rnd = new Random(randomvalue);
+        var rnd = Random.Shared;
 
         var response = await _mediator.Send(new CreateOrderCommand(
             Guid.NewGuid(),
@@ -50,7 +42,8 @@ public class DeliveryController : DefaultApiController
         var apiCouries = response.Couriers.Select(c => new Courier
         {
              Id = c.Id,
-             Location = new Location { X = c.Location.X, Y = c.Location.Y }
+             Location = new Location { X = c.Location.X, Y = c.Location.Y },
+             Status = EnumMapper.ConvertCourierStatus(c.Status)
         });
 
         return Ok(apiCouries);

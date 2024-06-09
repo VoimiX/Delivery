@@ -30,7 +30,7 @@ public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQue
         connection.Open();
 
         var result = await connection.QueryAsync<dynamic>(
-            @"select id, name, location_x, location_y
+            @"select id, name, location_x, location_y, status
                     FROM public.couriers where status=@status_busy or status=@status_ready",
             new { status_busy = (int)CourierStatus.Busy, status_ready = (int)CourierStatus.Ready}
             );
@@ -40,16 +40,16 @@ public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQue
 
     private List<CourierDto> MapCouriers(IEnumerable<dynamic> result)
     {
-        var orders = new List<CourierDto>();
+        var couriers = new List<CourierDto>();
         foreach (var item in result)
         {
-            var order = new CourierDto(
+            var courier = new CourierDto(
                 item.id,
                 item.name,
-                new Location(item.location_x, item.location_y) );
-            orders.Add(order);
+                new Location(item.location_x, item.location_y), (CourierDto.CourierStatus)item.status);
+            couriers.Add(courier);
         }
 
-        return orders;
+        return couriers;
     }
 }

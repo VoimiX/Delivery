@@ -46,6 +46,7 @@ public class CourierRepository : ICourierRepository
            .Couriers
            .Include(c => c.Transport)
            .Where(o => o.Status == CourierStatus.Busy)
+           //.Where(o => o.OrderId.HasValue)
            .ToArrayAsync();
 
         return couriers;

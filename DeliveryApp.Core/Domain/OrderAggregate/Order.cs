@@ -33,6 +33,7 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
 
             Status = OrderStatus.Assigned;
             courier.SetStatus(CourierStatus.Busy);
+            courier.SetOrder(this);
             CourierId = courier.Id;
         }
 

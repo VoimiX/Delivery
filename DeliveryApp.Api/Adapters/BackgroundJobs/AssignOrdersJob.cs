@@ -4,6 +4,7 @@ using Quartz;
 
 namespace DeliveryApp.Api.Adapters.BackgroundJobs;
 
+[DisallowConcurrentExecution]
 public class AssignOrdersJob : IJob
 {
     private readonly IMediator _mediator;

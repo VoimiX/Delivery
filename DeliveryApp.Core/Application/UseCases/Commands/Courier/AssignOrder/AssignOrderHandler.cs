@@ -34,7 +34,7 @@ public class AssignOrderHandler : IRequestHandler<AssignOrderCommand, AssignOrde
             if (couriers.Count == 0) break;
 
             var bestCourier = await _dispatchService.Dispatch(order, couriers);
-            if (bestCourier == null) continue;
+            if (bestCourier == null) continue; // этот заказ пока никто не может взять
 
             await _courierRepository.UpdateCourier(bestCourier);
             await _orderRepository.UpdateOrder(order);
