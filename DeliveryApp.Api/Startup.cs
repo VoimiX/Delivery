@@ -1,5 +1,10 @@
+using Api.Filters;
+using Api.Formatters;
+using Api.OpenApi;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
+using DeliveryApp.Core.Application.UseCases.Commands.Courier.EndWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.MoveToOrder;
+using DeliveryApp.Core.Application.UseCases.Commands.Courier.StartWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
 using DeliveryApp.Core.Application.UseCases.Queries.Courier.GetCouriesReadyBusy;
 using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
@@ -9,7 +14,11 @@ using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Primitives;
+using System.Reflection;
 
 namespace DeliveryApp.Api
 {
@@ -67,16 +76,50 @@ namespace DeliveryApp.Api
             services.AddTransient<IRequestHandler<CreateOrderCommand, CreateOrderResponse>, CreateOrderHandler>();
             services.AddTransient<IRequestHandler<MoveToOrderCommand, MoveToOrderResponse>, MoveToOrderHandler>();
             services.AddTransient<IRequestHandler<AssignOrderCommand, AssignOrderResponse>, AssignOrderHandler>();
-           
+            services.AddTransient<IRequestHandler<StartWorkCommand, StartWorkResponse>, StartWorkHandler>();
+            services.AddTransient<IRequestHandler<EndWorkCommand, EndWorkResponse>, EndWorkHandler>();
+
             // Queries
             services.AddTransient<IRequestHandler<GetCouriesReadyBusyQuery, GetCouriesReadyBusyResponse>>(_ =>
                 new GetCouriesReadyBusyHandler(connectionString));
             services.AddTransient<IRequestHandler<GetGetOrdersAssignedQuery, GetOrdersAssignedResponse>>(_ =>
                 new GetOrdersAssignedHandler(connectionString));
 
-
-
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
+
+            // HTTP Handlers
+            services.AddControllers(options =>
+            {
+                options.InputFormatters.Insert(0, new InputFormatterStream());
+            })
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter
+                    {
+                        NamingStrategy = new CamelCaseNamingStrategy()
+                    });
+                });
+
+            // Swagger
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("1.0.0", new OpenApiInfo
+                {
+                    Title = "Delivery Service",
+                    Description = "Отвечает за учет курьеров, деспетчеризацию доставкуов, доставку",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Vitalii Sitnikov",
+                        Email = "vs@supermail.com"
+                    }
+                });
+                options.CustomSchemaIds(type => type.FriendlyId(true));
+                options.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{Assembly.GetEntryAssembly().GetName().Name}.xml");
+                options.DocumentFilter<BasePathFilter>("");
+                options.OperationFilter<GeneratePathParamsValidationFilter>();
+            });
+            services.AddSwaggerGenNewtonsoftSupport();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -89,6 +132,26 @@ namespace DeliveryApp.Api
             {
                 app.UseHsts();
             }
+
+            app.UseRouting();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "openapi/{documentName}/openapi.json";
+            })
+                .UseSwaggerUI(options =>
+                {
+                    options.RoutePrefix = "openapi";
+                    options.SwaggerEndpoint("/openapi/1.0.0/openapi.json", "Swagger Delivery Service");
+                    options.RoutePrefix = string.Empty;
+                    options.SwaggerEndpoint("/openapi-original.json", "Swagger Delivery Service");
+                });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
             app.UseHealthChecks("/health");
             app.UseRouting();

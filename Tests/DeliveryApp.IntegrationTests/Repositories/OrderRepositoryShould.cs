@@ -52,7 +52,7 @@ namespace DeliveryApp.IntegrationTests.Repositories
         public async Task InitializeAsync()
         {
             //Стартуем БД (библиотека TestContainers запускает Docker контейнер с Postgres)
-            await _postgreSqlContainer.StartAsync();
+            await _postgreSqlContainer  .StartAsync();
 
             //Накатываем миграции и справочники
             var contextOptions = new DbContextOptionsBuilder<ApplicationDbContext>().UseNpgsql(

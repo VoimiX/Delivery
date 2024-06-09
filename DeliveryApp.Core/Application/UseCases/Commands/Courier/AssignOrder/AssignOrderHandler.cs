@@ -44,7 +44,7 @@ public class AssignOrderHandler : IRequestHandler<AssignOrderCommand, AssignOrde
         await _courierRepository.UpdateCourier(bestCourier);
         await _orderRepository.UpdateOrder(order);
 
-        await _unitOfWork.SaveEntitiesAsync();
+        await _unitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return new AssignOrderResponse();
     }

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DeliveryApp.Core.Application.UseCases.Queries.Courier.Dto;
 using DeliveryApp.Core.Domain.CourierAggregate;
+using DeliveryApp.Core.Domain.SharedKernel;
 using MediatR;
 using Npgsql;
 
@@ -29,7 +30,7 @@ public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQue
         connection.Open();
 
         var result = await connection.QueryAsync<dynamic>(
-            @"select id, name
+            @"select id, name, location_x, location_y
                     FROM public.couriers where status=@status_busy or status=@status_ready",
             new { status_busy = (int)CourierStatus.Busy, status_ready = (int)CourierStatus.Ready}
             );
@@ -42,7 +43,10 @@ public class GetCouriesReadyBusyHandler : IRequestHandler<GetCouriesReadyBusyQue
         var orders = new List<CourierDto>();
         foreach (var item in result)
         {
-            var order = new CourierDto(item.id, item.name);
+            var order = new CourierDto(
+                item.id,
+                item.name,
+                new Location(item.location_x, item.location_y) );
             orders.Add(order);
         }
 

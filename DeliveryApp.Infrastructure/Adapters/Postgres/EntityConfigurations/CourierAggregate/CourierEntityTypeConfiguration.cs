@@ -31,6 +31,7 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Cour
 
             entityTypeBuilder
                 .Property(entity => entity.Status)
+                .HasColumnName("status")
                 .IsRequired();
 
             entityTypeBuilder.Ignore(x => x.OrderId);
