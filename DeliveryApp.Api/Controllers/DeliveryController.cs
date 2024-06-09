@@ -1,6 +1,5 @@
 ﻿using Api.Controllers;
 using Api.Models;
-using DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.EndWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.StartWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
@@ -9,6 +8,7 @@ using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
 namespace DeliveryApp.Api.Controllers;
 
@@ -23,7 +23,23 @@ public class DeliveryController : DefaultApiController
 
     public override async Task<IActionResult> CreateOrder()
     {
-        var response = await _mediator.Send(new CreateOrderCommand(Guid.NewGuid(), locationX: 2, locationY: 3, weight: 5));
+        int randomvalue;
+        using (var rg = new RNGCryptoServiceProvider())
+        {
+            byte[] rno = new byte[5];
+            rg.GetBytes(rno);
+            randomvalue = BitConverter.ToInt32(rno, 0);
+        }
+
+        var rnd = new Random(randomvalue);
+
+        var response = await _mediator.Send(new CreateOrderCommand(
+            Guid.NewGuid(),
+            locationX: rnd.Next(1, 10),
+            locationY: rnd.Next(1, 10),
+            weight: rnd.Next(1, 8)
+            ));
+
         return Ok();
     }
 
