@@ -215,24 +215,23 @@
               "format" : "uuid",
               "type" : "string"
             },
+            "name" : {
+              "description" : "Имя",
+              "type" : "string"
+            },
             "location" : {
               "$ref" : "#/components/schemas/Location"
-            },
-            "status" : {
-              "description" : "Статус",
-              "enum" : [ "not-available", "ready", "busy" ],
-              "type" : "string"
             }
           },
-          "required" : [ "id", "location", "status" ]
+          "required" : [ "id", "location", "name" ]
         } ],
         "example" : {
+          "name" : "name",
           "location" : {
             "x" : 0,
             "y" : 6
           },
-          "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91",
-          "status" : "not-available"
+          "id" : "046b6c7f-0b8a-43b9-b35d-6489e6daee91"
         }
       },
       "Error" : {

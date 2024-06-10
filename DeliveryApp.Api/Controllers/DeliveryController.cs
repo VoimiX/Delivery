@@ -1,6 +1,5 @@
 ﻿using Api.Controllers;
 using Api.Models;
-using DeliveryApp.Api.Mappers;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.EndWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.StartWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
@@ -42,8 +41,7 @@ public class DeliveryController : DefaultApiController
         var apiCouries = response.Couriers.Select(c => new Courier
         {
              Id = c.Id,
-             Location = new Location { X = c.Location.X, Y = c.Location.Y },
-             Status = EnumMapper.ConvertCourierStatus(c.Status)
+             Location = new Location { X = c.Location.X, Y = c.Location.Y }
         });
 
         return Ok(apiCouries);

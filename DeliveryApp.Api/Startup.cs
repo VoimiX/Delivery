@@ -123,7 +123,7 @@ namespace DeliveryApp.Api
             });
             services.AddSwaggerGenNewtonsoftSupport();
 
-            CRON Jobs
+            //CRON Jobs
             services.AddQuartz(configure =>
             {
                 var assignOrdersJobKey = new JobKey(nameof(AssignOrdersJob));

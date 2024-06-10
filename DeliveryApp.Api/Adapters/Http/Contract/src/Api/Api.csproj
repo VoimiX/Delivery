@@ -9,7 +9,7 @@
     <Version>1.0.0</Version>
     <AssemblyName>Api</AssemblyName>
     <PackageId>Api</PackageId>
-    <UserSecretsId>4a9ea510-1f57-4edc-882e-35b550fd5f57</UserSecretsId>
+    <UserSecretsId>198b6bf1-7ae9-488a-b358-92c59922756b</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>

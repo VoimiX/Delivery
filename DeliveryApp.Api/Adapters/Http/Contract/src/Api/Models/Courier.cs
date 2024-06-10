@@ -35,48 +35,19 @@ namespace Api.Models
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Имя
+        /// </summary>
+        /// <value>Имя</value>
+        [Required]
+        [DataMember(Name="name", EmitDefaultValue=false)]
+        public string Name { get; set; }
+
+        /// <summary>
         /// Gets or Sets Location
         /// </summary>
         [Required]
         [DataMember(Name="location", EmitDefaultValue=false)]
         public Location Location { get; set; }
-
-
-        /// <summary>
-        /// Статус
-        /// </summary>
-        /// <value>Статус</value>
-        [TypeConverter(typeof(CustomEnumConverter<StatusEnum>))]
-        [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public enum StatusEnum
-        {
-            
-            /// <summary>
-            /// Enum NotAvailableEnum for not-available
-            /// </summary>
-            [EnumMember(Value = "not-available")]
-            NotAvailableEnum = 1,
-            
-            /// <summary>
-            /// Enum ReadyEnum for ready
-            /// </summary>
-            [EnumMember(Value = "ready")]
-            ReadyEnum = 2,
-            
-            /// <summary>
-            /// Enum BusyEnum for busy
-            /// </summary>
-            [EnumMember(Value = "busy")]
-            BusyEnum = 3
-        }
-
-        /// <summary>
-        /// Статус
-        /// </summary>
-        /// <value>Статус</value>
-        [Required]
-        [DataMember(Name="status", EmitDefaultValue=true)]
-        public StatusEnum Status { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -87,8 +58,8 @@ namespace Api.Models
             var sb = new StringBuilder();
             sb.Append("class Courier {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  Location: ").Append(Location).Append("\n");
-            sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -131,14 +102,14 @@ namespace Api.Models
                     Id.Equals(other.Id)
                 ) && 
                 (
+                    Name == other.Name ||
+                    Name != null &&
+                    Name.Equals(other.Name)
+                ) && 
+                (
                     Location == other.Location ||
                     Location != null &&
                     Location.Equals(other.Location)
-                ) && 
-                (
-                    Status == other.Status ||
-                    
-                    Status.Equals(other.Status)
                 );
         }
 
@@ -154,10 +125,10 @@ namespace Api.Models
                 // Suitable nullity checks etc, of course :)
                     if (Id != null)
                     hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (Name != null)
+                    hashCode = hashCode * 59 + Name.GetHashCode();
                     if (Location != null)
                     hashCode = hashCode * 59 + Location.GetHashCode();
-                    
-                    hashCode = hashCode * 59 + Status.GetHashCode();
                 return hashCode;
             }
         }
