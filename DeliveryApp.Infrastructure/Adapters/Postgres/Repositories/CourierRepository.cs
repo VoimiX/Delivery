@@ -46,10 +46,22 @@ public class CourierRepository : ICourierRepository
            .Couriers
            .Include(c => c.Transport)
            .Where(o => o.Status == CourierStatus.Busy)
-           //.Where(o => o.OrderId.HasValue)
+           .Join(_dbContext.Orders,
+            c => c.Id,
+            o => o.CourierId,
+            (c, o) => new
+            {
+                Courier = c,
+                Order = o
+            })           
            .ToArrayAsync();
 
-        return couriers;
+        foreach (var courier in couriers)
+        {
+            courier.Courier.SetOrder(courier.Order);
+        }
+
+        return couriers.Select(c => c.Courier).ToArray();
     }
 
     public Task UpdateCourier(Courier courier)
