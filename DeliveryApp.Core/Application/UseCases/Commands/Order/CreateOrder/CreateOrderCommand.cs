@@ -4,17 +4,15 @@ namespace DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder
 {
     public class CreateOrderCommand : IRequest<CreateOrderResponse>
     {
-        public CreateOrderCommand(Guid id, int locationX, int locationY, int weight)
+        public CreateOrderCommand(Guid id, string address, int weight)
         {
             Id = id;
-            LocationX = locationX;
-            LocationY = locationY;
+            Address = address;
             Weight = weight;
         }
 
         public Guid Id { get; }
-        public int LocationX { get; }
-        public int LocationY { get; }
+        public string Address { get; }
         public int Weight { get; }
     }
 }

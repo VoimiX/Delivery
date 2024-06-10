@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -13,11 +13,24 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Adapters\Grpc\" />
       <Folder Include="Adapters\Kafka\" />
     </ItemGroup>
 
-    <ItemGroup>
+  <ItemGroup>
+    <None Remove="Adapters\Grpc\GeoService\grpc.proto" />
+    <Protobuf Include="Adapters\Grpc\GeoService\grpc.proto">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Protobuf>
+  </ItemGroup>
+
+  <ItemGroup>
+      <PackageReference Include="Google.Protobuf" Version="3.27.1" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.63.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.64.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
