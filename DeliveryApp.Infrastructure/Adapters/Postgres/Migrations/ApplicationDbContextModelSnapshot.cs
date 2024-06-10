@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace DeliveryApp.Infrastructure.Adapters.Postgres.Migrations
+namespace DeliveryApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -57,56 +57,47 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("capacity");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("character varying(13)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
                     b.Property<int>("Speed")
                         .HasColumnType("integer")
                         .HasColumnName("speed");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
 
                     b.HasKey("Id");
 
                     b.ToTable("transports", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Transport");
-
-                    b.UseTphMappingStrategy();
-
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Capacity = 4,
-                            Name = "Bicycle",
-                            Speed = 2
+                            Capacity = 8,
+                            Speed = 4,
+                            Type = "Car"
                         },
                         new
                         {
                             Id = 2,
-                            Capacity = 8,
-                            Name = "Car",
-                            Speed = 4
+                            Capacity = 1,
+                            Speed = 1,
+                            Type = "Pedestrian"
                         },
                         new
                         {
                             Id = 3,
-                            Capacity = 1,
-                            Name = "Pedestrian",
-                            Speed = 1
+                            Capacity = 4,
+                            Speed = 2,
+                            Type = "Bicycle"
                         },
                         new
                         {
                             Id = 4,
                             Capacity = 6,
-                            Name = "Scooter",
-                            Speed = 3
+                            Speed = 3,
+                            Type = "Scooter"
                         });
                 });
 
@@ -127,34 +118,6 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("orders", (string)null);
-                });
-
-            modelBuilder.Entity("DeliveryApp.Core.Domain.CourierAggregate.Bicycle", b =>
-                {
-                    b.HasBaseType("DeliveryApp.Core.Domain.CourierAggregate.Transport");
-
-                    b.HasDiscriminator().HasValue("Bicycle");
-                });
-
-            modelBuilder.Entity("DeliveryApp.Core.Domain.CourierAggregate.Car", b =>
-                {
-                    b.HasBaseType("DeliveryApp.Core.Domain.CourierAggregate.Transport");
-
-                    b.HasDiscriminator().HasValue("Car");
-                });
-
-            modelBuilder.Entity("DeliveryApp.Core.Domain.CourierAggregate.Pedestrian", b =>
-                {
-                    b.HasBaseType("DeliveryApp.Core.Domain.CourierAggregate.Transport");
-
-                    b.HasDiscriminator().HasValue("Pedestrian");
-                });
-
-            modelBuilder.Entity("DeliveryApp.Core.Domain.CourierAggregate.Scooter", b =>
-                {
-                    b.HasBaseType("DeliveryApp.Core.Domain.CourierAggregate.Transport");
-
-                    b.HasDiscriminator().HasValue("Scooter");
                 });
 
             modelBuilder.Entity("DeliveryApp.Core.Domain.CourierAggregate.Courier", b =>

@@ -36,10 +36,10 @@ public class AssignOrderCommandShould
         var courierIdCar = Guid.NewGuid();
         var courierIdPed = Guid.NewGuid();
 
-        var curierCar = new Courier(courierIdCar, "Petr Petrov", new Car(12, "Ford Ttransit"));
+        var curierCar = new Courier(courierIdCar, "Petr Petrov", Transport.Car);
         curierCar.SetStatus(CourierStatus.Ready);
 
-        var courierPed = new Courier(courierIdPed, "Petr Petrov", new Pedestrian(188, "Petr Petrov"));
+        var courierPed = new Courier(courierIdPed, "Petr Petrov", Transport.Pedestrain);
         courierPed.SetStatus(CourierStatus.Ready);
 
         _courierRepositoryMock.GetFreeCouriers().Returns([curierCar, courierPed]);

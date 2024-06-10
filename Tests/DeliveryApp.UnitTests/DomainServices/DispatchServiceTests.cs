@@ -15,9 +15,9 @@ public class DispatchServiceTests
     [Fact]
     public async Task Test_dispatch_best_courier()
     {
-        var courierCar = new Courier(Guid.NewGuid(), "courier1", new Car(2, "Gazel"));
-        var courierPed = new Courier(Guid.NewGuid(), "courier2", new Pedestrian(4, "Petr Petrovich"));
-        var courierScooter = new Courier(Guid.NewGuid(), "courier3", new Scooter(7, "Moped1"));
+        var courierCar = new Courier(Guid.NewGuid(), "courier1", Transport.Car);
+        var courierPed = new Courier(Guid.NewGuid(), "courier2", Transport.Pedestrain);
+        var courierScooter = new Courier(Guid.NewGuid(), "courier3", Transport.Scooter);
 
         courierCar.StartWork();
         courierPed.StartWork();
@@ -36,8 +36,8 @@ public class DispatchServiceTests
     [Fact]
     public async Task Test_dispatch_best_courier_not_found_weight_exceeds()
     {        
-        var courierPed = new Courier(Guid.NewGuid(), "courier2", new Pedestrian(4, "Petr Petrovich"));
-        var courierScooter = new Courier(Guid.NewGuid(), "courier3", new Scooter(7, "Moped1"));
+        var courierPed = new Courier(Guid.NewGuid(), "courier2", Transport.Pedestrain);
+        var courierScooter = new Courier(Guid.NewGuid(), "courier3", Transport.Scooter);
         courierPed.StartWork();
         courierScooter.StartWork();
 

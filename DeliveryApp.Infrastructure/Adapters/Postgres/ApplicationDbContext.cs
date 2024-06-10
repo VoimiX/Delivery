@@ -17,22 +17,11 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Car>();
-        modelBuilder.Entity<Pedestrian>();
-        modelBuilder.Entity<Scooter>();
-        modelBuilder.Entity<Bicycle>();
-
         // Order Aggregate
         modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
 
+        // Courier Aggregate
         modelBuilder.ApplyConfiguration(new CourierEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new TransportEntityTypeConfiguration());
-
-        // Courier transports
-        modelBuilder.Entity<Transport>(b =>
-        {
-            var allTransports = Transport.All;
-            b.HasData(allTransports.Select(c => new { c.Id, c.Name, c.Speed, c.Capacity }));
-        });
+        modelBuilder.ApplyConfiguration(new TransportEntityTypeConfiguration());       
     }
 }

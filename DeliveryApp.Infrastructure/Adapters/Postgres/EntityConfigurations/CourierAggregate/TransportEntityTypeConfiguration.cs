@@ -17,12 +17,7 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Cour
                 .Property(entity => entity.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id")
-                .IsRequired();
-
-            entityTypeBuilder
-                .Property(entity => entity.Name)
-                .HasColumnName("name")
-                .IsRequired();
+                .IsRequired();         
 
             entityTypeBuilder
                 .Property(entity => entity.Speed)
@@ -34,6 +29,14 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Cour
                 .HasColumnName("capacity")
                 .IsRequired()
                 .HasConversion(x => x.Kilograms, x => new Weight(x));
+
+            entityTypeBuilder
+                .Property(entity => entity.Type)
+                .HasColumnName("type")
+                .IsRequired()
+                .HasConversion(x => x.ToString(), x => Enum.Parse<Transport.TransportType>(x));
+
+            entityTypeBuilder.HasData(Transport.All);
         }
     }
 }

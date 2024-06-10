@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace DeliveryApp.Infrastructure.Adapters.Postgres.Migrations
+namespace DeliveryApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -34,10 +34,9 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
                     speed = table.Column<int>(type: "integer", nullable: false),
                     capacity = table.Column<int>(type: "integer", nullable: false),
-                    Discriminator = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false)
+                    type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,7 +52,7 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.Migrations
                     transport_id = table.Column<int>(type: "integer", nullable: false),
                     location_x = table.Column<int>(type: "integer", nullable: true),
                     location_y = table.Column<int>(type: "integer", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,13 +67,13 @@ namespace DeliveryApp.Infrastructure.Adapters.Postgres.Migrations
 
             migrationBuilder.InsertData(
                 table: "transports",
-                columns: new[] { "id", "capacity", "Discriminator", "name", "speed" },
+                columns: new[] { "id", "capacity", "speed", "type" },
                 values: new object[,]
                 {
-                    { 1, 4, "Transport", "Bicycle", 2 },
-                    { 2, 8, "Transport", "Car", 4 },
-                    { 3, 1, "Transport", "Pedestrian", 1 },
-                    { 4, 6, "Transport", "Scooter", 3 }
+                    { 1, 8, 4, "Car" },
+                    { 2, 1, 1, "Pedestrian" },
+                    { 3, 4, 2, "Bicycle" },
+                    { 4, 6, 3, "Scooter" }
                 });
 
             migrationBuilder.CreateIndex(

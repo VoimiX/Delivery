@@ -16,7 +16,7 @@ public class CourierTests
         Courier courier = new Courier(
             id: new Guid("68fa7c82-b797-4c22-948a-a1801649bea0"),
             "Vasya",
-            new Car(id: 38, "Gazel")
+            Transport.Car
             );
 
         Order order = new Order(
@@ -52,7 +52,7 @@ public class CourierTests
         Courier courier = new Courier(
             id: new Guid("31ddccd0-1f50-4f72-893e-3c8c91f3baee"),
             "Vasya",
-            new Pedestrian(id: 22, "Vasya"));
+            Transport.Pedestrain);
 
         Order order = new Order(
             new Guid("11d34e42-5195-4dbc-a5a9-d7b45af19d78"),
@@ -91,7 +91,7 @@ public class CourierTests
         Courier courier = new Courier(
             id: new Guid("71ea7a77-9854-4523-9521-5dabaa733ddb"),
             "Vasya",
-            new Pedestrian(id: 22, "Vasya"));
+            Transport.Pedestrain);
 
         Order order = new Order(
             new Guid("11d34e42-5195-4dbc-a5a9-d7b45af19d78"),
