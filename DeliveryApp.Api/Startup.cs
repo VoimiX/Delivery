@@ -123,27 +123,27 @@ namespace DeliveryApp.Api
             });
             services.AddSwaggerGenNewtonsoftSupport();
 
-            // CRON Jobs
-            //services.AddQuartz(configure =>
-            //{
-            //    var assignOrdersJobKey = new JobKey(nameof(AssignOrdersJob));
-            //    var moveCouriersJobKey = new JobKey(nameof(MoveCouriersJob));
-            //    configure
-            //        .AddJob<AssignOrdersJob>(assignOrdersJobKey)
-            //        .AddTrigger(
-            //            trigger => trigger.ForJob(assignOrdersJobKey)
-            //                .WithSimpleSchedule(
-            //                    schedule => schedule.WithIntervalInSeconds(5)
-            //                        .RepeatForever()))
-            //        .AddJob<MoveCouriersJob>(moveCouriersJobKey)
-            //        .AddTrigger(
-            //            trigger => trigger.ForJob(moveCouriersJobKey)
-            //                .WithSimpleSchedule(
-            //                    schedule => schedule.WithIntervalInSeconds(3)
-            //                        .RepeatForever()));
-            //    configure.UseMicrosoftDependencyInjectionJobFactory();
-            //});
-            //services.AddQuartzHostedService();
+            CRON Jobs
+            services.AddQuartz(configure =>
+            {
+                var assignOrdersJobKey = new JobKey(nameof(AssignOrdersJob));
+                var moveCouriersJobKey = new JobKey(nameof(MoveCouriersJob));
+                configure
+                    .AddJob<AssignOrdersJob>(assignOrdersJobKey)
+                    .AddTrigger(
+                        trigger => trigger.ForJob(assignOrdersJobKey)
+                            .WithSimpleSchedule(
+                                schedule => schedule.WithIntervalInSeconds(5)
+                                    .RepeatForever()))
+                    .AddJob<MoveCouriersJob>(moveCouriersJobKey)
+                    .AddTrigger(
+                        trigger => trigger.ForJob(moveCouriersJobKey)
+                            .WithSimpleSchedule(
+                                schedule => schedule.WithIntervalInSeconds(3)
+                                    .RepeatForever()));
+                configure.UseMicrosoftDependencyInjectionJobFactory();
+            });
+            services.AddQuartzHostedService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
