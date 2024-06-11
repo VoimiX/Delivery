@@ -3,6 +3,7 @@ using Api.Formatters;
 using Api.OpenApi;
 using DeliveryApp.Api.Adapters.BackgroundJobs;
 using DeliveryApp.Api.Adapters.Kafka.BasketConfirmed;
+using DeliveryApp.Core.Application.DomainEventHandlers;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.EndWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.MoveToOrder;
@@ -10,6 +11,7 @@ using DeliveryApp.Core.Application.UseCases.Commands.Courier.StartWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
 using DeliveryApp.Core.Application.UseCases.Queries.Courier.GetCouriesReadyBusy;
 using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
+using DeliveryApp.Core.Domain.OrderAggregate.DomainEvents;
 using DeliveryApp.Core.DomainServices;
 using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Grpc.GeoService;
@@ -131,6 +133,11 @@ namespace DeliveryApp.Api
 
             // gRPC
             services.AddGrpcClient<GeoServiceClient>(options => { options.Address = new Uri(geoServiceGrpcHost); });
+
+            // Domain Event Handlers
+            services.AddTransient<INotificationHandler<OrderAssignedDomainEvent>, OrderAssignedDomainEventHandler>();
+            services.AddTransient<INotificationHandler<OrderCreatedDomainEvent>, OrderCreatedDomainEventHandler>();
+            services.AddTransient<INotificationHandler<OrderCompletedDomainEvent>, OrderCompletedDomainEventHandler>();
 
             // Message Broker
             var sp = services.BuildServiceProvider();
