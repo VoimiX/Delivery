@@ -12,18 +12,17 @@
       <ProjectReference Include="..\Utils\Primitives\Primitives.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Adapters\Kafka\" />
-    </ItemGroup>
-
   <ItemGroup>
     <None Remove="Adapters\Grpc\GeoService\grpc.proto" />
+    <None Remove="Adapters\Kafka\OrderEvents\Contract.proto" />
     <Protobuf Include="Adapters\Grpc\GeoService\grpc.proto">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Protobuf>
+    <Protobuf Include="Adapters\Kafka\OrderEvents\Contract.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>
+      <PackageReference Include="Confluent.Kafka" Version="2.4.0" />
       <PackageReference Include="Google.Protobuf" Version="3.27.1" />
       <PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
       <PackageReference Include="Grpc.Net.Client" Version="2.63.0" />

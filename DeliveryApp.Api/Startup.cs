@@ -13,6 +13,7 @@ using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
 using DeliveryApp.Core.DomainServices;
 using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Grpc.GeoService;
+using DeliveryApp.Infrastructure.Adapters.Kafka.OrderEvents;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using MediatR;
@@ -23,6 +24,7 @@ using Newtonsoft.Json.Serialization;
 using Primitives;
 using Quartz;
 using System.Reflection;
+using static Confluent.Kafka.ConfigPropertyNames;
 
 namespace DeliveryApp.Api
 {
@@ -70,6 +72,7 @@ namespace DeliveryApp.Api
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ICourierRepository, CourierRepository>();
             services.AddTransient<IGeoServiceClient>(_ => new GeoServiceClient(geoServiceGrpcHost));
+            services.AddTransient<IBusProducer>(_ => new OrderEventsProducer(messageBrokerHost));
 
             // Domain Services
             services.AddTransient<IDispatchService, DispatchService>();

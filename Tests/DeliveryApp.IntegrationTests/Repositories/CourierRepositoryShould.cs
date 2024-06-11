@@ -1,8 +1,11 @@
 ﻿using DeliveryApp.Core.Domain.CourierAggregate;
+using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using FluentAssertions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute;
 using Testcontainers.PostgreSql;
 using Xunit;
 
@@ -36,8 +39,10 @@ public class CourierRepositoryShould : IAsyncLifetime
 
         var courierRepository = new CourierRepository(_context);
         await courierRepository.AddCourier(courier);
+        
+        var mediator = Substitute.For<IMediator>();
 
-        var unitOfWork = new UnitOfWork(_context);
+        var unitOfWork = new UnitOfWork(_context, mediator);
         await unitOfWork.SaveEntitiesAsync();
 
         var courierFromdb = await courierRepository.GetCourier(courier.Id);
