@@ -2,6 +2,7 @@ using Api.Filters;
 using Api.Formatters;
 using Api.OpenApi;
 using DeliveryApp.Api.Adapters.BackgroundJobs;
+using DeliveryApp.Api.Adapters.Kafka.BasketConfirmed;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.EndWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.MoveToOrder;
@@ -127,6 +128,11 @@ namespace DeliveryApp.Api
 
             // gRPC
             services.AddGrpcClient<GeoServiceClient>(options => { options.Address = new Uri(geoServiceGrpcHost); });
+
+            // Message Broker
+            var sp = services.BuildServiceProvider();
+            var mediator = sp.GetService<IMediator>();
+            services.AddHostedService(x => new ConsumerService(mediator, messageBrokerHost));
 
             //CRON Jobs
             services.AddQuartz(configure =>

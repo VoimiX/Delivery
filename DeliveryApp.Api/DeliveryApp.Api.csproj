@@ -11,6 +11,9 @@
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Adapters\Kafka\BasketConfirmed\Contract.proto" />
+	</ItemGroup>
+	<ItemGroup>
 	  <PackageReference Include="Confluent.Kafka" Version="2.4.0" />
 	  <PackageReference Include="Google.Protobuf" Version="3.27.1" />
 	  <PackageReference Include="Grpc.Tools" Version="2.64.0">
@@ -38,8 +41,8 @@
 	  <Folder Include="Adapters\Http\Contract\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="Adapters\Kafka\BasketConfirmed\Contract.proto">
+	  <Protobuf Include="Adapters\Kafka\BasketConfirmed\Contract.proto">
 	    <GrpcServices>Client</GrpcServices>
-	  </None>
+	  </Protobuf>
 	</ItemGroup>	
 </Project>

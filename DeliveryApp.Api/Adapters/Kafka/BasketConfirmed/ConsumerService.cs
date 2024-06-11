@@ -1,8 +1,8 @@
-﻿using Confluent.Kafka;
+﻿using BasketConfirmed;
+using Confluent.Kafka;
+using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
 using MediatR;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using System.Runtime.Intrinsics.X86;
 
 namespace DeliveryApp.Api.Adapters.Kafka.BasketConfirmed;
 
@@ -45,10 +45,11 @@ public class ConsumerService : BackgroundService
 
                 Console.WriteLine($"Received message at {consumeResult.TopicPartitionOffset}: {consumeResult.Message.Value}");
                 
-                //var basketConfirmedIntegrationEvent = JsonConvert.DeserializeObject<BasketConfirmedIntegrationEvent>(consumeResult.Message.Value);
+                var basketConfirmedIntegrationEvent = JsonConvert.DeserializeObject<BasketConfirmedIntegrationEvent>
+                    (consumeResult.Message.Value);
 
                 //Тут ваш Use Case
-                //_mediator.pu
+                await _mediator.Send(new CreateOrderCommand(Guid.NewGuid(), address: "Айтишная", Random.Shared.Next(1, 8)));
 
                 try
                 {
