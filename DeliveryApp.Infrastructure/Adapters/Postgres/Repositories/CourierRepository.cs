@@ -40,7 +40,7 @@ public class CourierRepository : ICourierRepository
         return couriers;
     }
 
-    public async Task<Courier[]> GetAssignedCouriers()
+    public async Task<Courier[]> GetBusyCouriers()
     {
         var couriers = await _dbContext
            .Couriers

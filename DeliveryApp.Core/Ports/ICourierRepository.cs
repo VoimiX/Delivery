@@ -8,5 +8,5 @@ public interface ICourierRepository
     Task UpdateCourier(Courier courier);
     Task<Courier> GetCourier(Guid id);
     Task<Courier[]> GetFreeCouriers();
-    Task<Courier[]> GetAssignedCouriers();
+    Task<Courier[]> GetBusyCouriers();
 }

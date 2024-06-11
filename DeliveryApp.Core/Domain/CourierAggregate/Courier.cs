@@ -128,7 +128,7 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             if (Location == order.Location)
             {
                 order.Complete(this);
-                Status = CourierStatus.Ready;                
+                Status = CourierStatus.Ready;
             }
         }
 

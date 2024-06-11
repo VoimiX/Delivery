@@ -20,12 +20,12 @@ public class MoveToOrderHandler : IRequestHandler<MoveToOrderCommand, MoveToOrde
 
     public async Task<MoveToOrderResponse> Handle(MoveToOrderCommand request, CancellationToken cancellationToken)
     {
-        var couriesInWork = await _courierRepository.GetAssignedCouriers();
+        var couriesInWork = await _courierRepository.GetBusyCouriers();
 
         foreach(var courier in couriesInWork)
         {
             var order = await _orderRepository.GetCourierOrder(courier.Id);
-            if (order == null) //throw new DeliveryException($"Заказ у курьера (id={courier.Id}) не найден");
+            if (order == null)
                 continue; // пока не назначен заказ
 
             courier.SetOrder(order);
