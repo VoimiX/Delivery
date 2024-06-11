@@ -49,7 +49,11 @@ public class ConsumerService : BackgroundService
                     (consumeResult.Message.Value);
 
                 //Тут ваш Use Case
-                await _mediator.Send(new CreateOrderCommand(Guid.NewGuid(), address: "Айтишная", Random.Shared.Next(1, 8)));
+                await _mediator.Send(new CreateOrderCommand(
+                    orderId: Guid.NewGuid(), 
+                    address: basketConfirmedIntegrationEvent.Address,
+                    basketConfirmedIntegrationEvent.Weight
+                    ));
 
                 try
                 {
