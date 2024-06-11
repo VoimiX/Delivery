@@ -50,7 +50,7 @@ public class ConsumerService : BackgroundService
 
                 //Тут ваш Use Case
                 await _mediator.Send(new CreateOrderCommand(
-                    orderId: Guid.NewGuid(), 
+                    orderId: Guid.Parse(basketConfirmedIntegrationEvent.BasketId), 
                     address: basketConfirmedIntegrationEvent.Address,
                     basketConfirmedIntegrationEvent.Weight
                     ));
