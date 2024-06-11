@@ -24,11 +24,11 @@ public class MoveToOrderHandler : IRequestHandler<MoveToOrderCommand, MoveToOrde
 
         foreach(var courier in couriesInWork)
         {
-            if (courier.OrderId == null) throw new DeliveryException($"У курьера id={courier.Id} не назначен заказ. Невозможно сделать шаг к заказу.");
+            var order = await _orderRepository.GetCourierOrder(courier.Id);
+            if (order == null) //throw new DeliveryException($"Заказ у курьера (id={courier.Id}) не найден");
+                continue; // пока не назначен заказ
 
-            var order = await _orderRepository.GetOrder(courier.OrderId.Value);
-            if (order == null) throw new DeliveryException($"Заказ не найден по id={courier.OrderId}");
-
+            courier.SetOrder(order);
             courier.MakeStepToOrder(order);
             if (order.Status == Domain.OrderAggregate.OrderStatus.Completed)
             {

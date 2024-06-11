@@ -1,5 +1,4 @@
 ﻿using DeliveryApp.Core.Domain.CourierAggregate;
-using DeliveryApp.Core.Domain.OrderAggregate;
 using DeliveryApp.Core.Ports;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,23 +46,9 @@ public class CourierRepository : ICourierRepository
            .Couriers
            .Include(c => c.Transport)
            .Where(c => c.Status == CourierStatus.Busy)
-           .Join(_dbContext.Orders,
-            c => c.Id,
-            o => o.CourierId,
-            (c, o) => new
-            {
-                Courier = c,
-                Order = o
-            })           
-           .Where(x => x.Order.Status == OrderStatus.Assigned)
            .ToArrayAsync();
 
-        foreach (var courier in couriers)
-        {
-            courier.Courier.SetOrder(courier.Order);
-        }
-
-        return couriers.Select(c => c.Courier).ToArray();
+        return couriers;
     }
 
     public Task UpdateCourier(Courier courier)
