@@ -19,6 +19,14 @@ public class OrderRepository : IOrderRepository
         return Task.FromResult(entity);
     }
 
+    public async Task<Order> GetCourierOrder(Guid courierId)
+    {
+        var order = await _dbContext.Orders
+            .FirstOrDefaultAsync(o => o.CourierId == courierId);
+
+        return order;
+    }
+
     public async Task<Order> GetOrder(Guid id)
     {
         var order = await _dbContext

@@ -1,5 +1,4 @@
-﻿using DeliveryApp.Core.Domain.Exceptions;
-using DeliveryApp.Core.DomainServices;
+﻿using DeliveryApp.Core.DomainServices;
 using DeliveryApp.Core.Ports;
 using MediatR;
 using Primitives;
@@ -27,24 +26,22 @@ public class AssignOrderHandler : IRequestHandler<AssignOrderCommand, AssignOrde
 
     public async Task<AssignOrderResponse> Handle(AssignOrderCommand request, CancellationToken cancellationToken)
     {
-        var couriers = new List<Domain.CourierAggregate.Courier>();
-        foreach(var courierId in request.Couriers)
+        var orders = await _orderRepository.GetOrdersNew();
+        var couriers = (await _courierRepository.GetFreeCouriers()).ToList();
+
+        foreach(var order in orders)
         {
-            var courier = await _courierRepository.GetCourier(courierId);
-            if (courier == null) throw new DeliveryException($"Курьер не найден по id={courierId}");
+            if (couriers.Count == 0) break;
 
-            couriers.Add(courier);
-        }       
+            var bestCourier = await _dispatchService.Dispatch(order, couriers);
+            if (bestCourier == null) continue; // этот заказ пока никто не может взять
 
-        var order = await _orderRepository.GetOrder(request.OrderId);
-        if (order == null) throw new DeliveryException($"Заказ не найден по id={request.OrderId}");
+            await _courierRepository.UpdateCourier(bestCourier);
+            await _orderRepository.UpdateOrder(order);
 
-        var bestCourier = await _dispatchService.Dispatch(order, couriers);
-       
-        await _courierRepository.UpdateCourier(bestCourier);
-        await _orderRepository.UpdateOrder(order);
-
-        await _unitOfWork.SaveEntitiesAsync();
+            couriers.Remove(bestCourier); // удаляем из списка доступных курьеров
+        }
+        await _unitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return new AssignOrderResponse();
     }

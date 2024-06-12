@@ -20,15 +20,15 @@ public class MoveToOrderHandler : IRequestHandler<MoveToOrderCommand, MoveToOrde
 
     public async Task<MoveToOrderResponse> Handle(MoveToOrderCommand request, CancellationToken cancellationToken)
     {
-        foreach(var courierId in request.Couriers)
+        var couriesInWork = await _courierRepository.GetBusyCouriers();
+
+        foreach(var courier in couriesInWork)
         {
-            var courier = await _courierRepository.GetCourier(courierId);
-            if (courier == null) throw new DeliveryException($"Курьер не найден по id={courierId}");
-            if (courier.OrderId == null) throw new DeliveryException($"У курьера id={courierId} не назначен заказ. Невозможно сделать шаг к заказу.");
+            var order = await _orderRepository.GetCourierOrder(courier.Id);
+            if (order == null)
+                continue; // пока не назначен заказ
 
-            var order = await _orderRepository.GetOrder(courier.OrderId.Value);
-            if (order == null) throw new DeliveryException($"Заказ не найден по id={courier.OrderId}");
-
+            courier.SetOrder(order);
             courier.MakeStepToOrder(order);
             if (order.Status == Domain.OrderAggregate.OrderStatus.Completed)
             {

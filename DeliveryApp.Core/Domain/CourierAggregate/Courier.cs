@@ -51,6 +51,7 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
             order.AssignToCourier(this);
             OrderId = order.Id;
+            SetStatus(CourierStatus.Busy);
         }
 
         public void StartWork()
@@ -93,8 +94,9 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
             if (order.Location == Location)
             {
-                Status = CourierStatus.Ready;
                 order.Complete(this);
+                Status = CourierStatus.Ready;
+                return;
             }
 
             Status = CourierStatus.Busy;
@@ -125,9 +127,14 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
             if (Location == order.Location)
             {
-                Status = CourierStatus.Ready;
                 order.Complete(this);
+                Status = CourierStatus.Ready;
             }
+        }
+
+        public void SetOrder(Order order)
+        {
+            OrderId = order.Id;
         }
     }
 }
