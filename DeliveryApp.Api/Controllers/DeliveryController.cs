@@ -40,7 +40,8 @@ public class DeliveryController : DefaultApiController
         var apiCouries = response.Couriers.Select(c => new Courier
         {
              Id = c.Id,
-             Location = new Location { X = c.Location.X, Y = c.Location.Y }
+             Location = new Location { X = c.Location.X, Y = c.Location.Y },
+             Name = c.Name,
         });
 
         return Ok(apiCouries);
