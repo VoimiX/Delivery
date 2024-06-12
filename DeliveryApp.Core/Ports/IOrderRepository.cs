@@ -9,4 +9,5 @@ public interface IOrderRepository
     Task<Order> GetOrder(Guid id);
     Task<Order[]> GetOrdersNew();
     Task<Order[]> GetOrdersAssigned();
+    Task<Order> GetCourierOrder(Guid courierId);
 }

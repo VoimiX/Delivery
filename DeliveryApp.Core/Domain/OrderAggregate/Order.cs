@@ -45,8 +45,9 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
             if (Status != OrderStatus.Assigned)
             {
                 throw new DeliveryException("Завершить можно только назначенный ранее заказ");
-            }            
+            }
 
+            CourierId = null;
             Status = OrderStatus.Completed;
             courier.SetStatus(CourierStatus.Ready);
         }

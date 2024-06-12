@@ -40,28 +40,15 @@ public class CourierRepository : ICourierRepository
         return couriers;
     }
 
-    public async Task<Courier[]> GetAssignedCouriers()
+    public async Task<Courier[]> GetBusyCouriers()
     {
         var couriers = await _dbContext
            .Couriers
            .Include(c => c.Transport)
-           .Where(o => o.Status == CourierStatus.Busy)
-           .Join(_dbContext.Orders,
-            c => c.Id,
-            o => o.CourierId,
-            (c, o) => new
-            {
-                Courier = c,
-                Order = o
-            })           
+           .Where(c => c.Status == CourierStatus.Busy)
            .ToArrayAsync();
 
-        foreach (var courier in couriers)
-        {
-            courier.Courier.SetOrder(courier.Order);
-        }
-
-        return couriers.Select(c => c.Courier).ToArray();
+        return couriers;
     }
 
     public Task UpdateCourier(Courier courier)

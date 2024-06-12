@@ -96,6 +96,7 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             {
                 order.Complete(this);
                 Status = CourierStatus.Ready;
+                return;
             }
 
             Status = CourierStatus.Busy;
@@ -126,8 +127,8 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
 
             if (Location == order.Location)
             {
-                Status = CourierStatus.Ready;
                 order.Complete(this);
+                Status = CourierStatus.Ready;
             }
         }
 

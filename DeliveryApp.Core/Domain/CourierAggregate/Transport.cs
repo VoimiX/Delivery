@@ -18,6 +18,11 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
         public Weight Capacity { get; }
         public TransportType Type { get; }
 
+        public override string ToString()
+        {
+            return Type.ToString();
+        }
+
         public bool CanHandleWeight(Weight weight)
         {
             return weight <= Capacity;
@@ -45,36 +50,12 @@ namespace DeliveryApp.Core.Domain.CourierAggregate
             Bicycle = 4
         }
 
-        public static Transport Car
-        {
-            get
-            {
-                return All.Single(x => x.Type == TransportType.Car);
-            }
-        }
+        public static Transport Car => All.Single(x => x.Type == TransportType.Car);
 
-        public static Transport Pedestrain
-        {
-            get
-            {
-                return All.Single(x => x.Type == TransportType.Pedestrian);
-            }
-        }
+        public static Transport Pedestrain => All.Single(x => x.Type == TransportType.Pedestrian);          
+        
+        public static Transport Scooter => All.Single(x => x.Type == TransportType.Scooter);
 
-        public static Transport Scooter
-        {
-            get
-            {
-                return All.Single(x => x.Type == TransportType.Scooter);
-            }
-        }
-
-        public static Transport Bicycle
-        {
-            get
-            {
-                return All.Single(x => x.Type == TransportType.Bicycle);
-            }
-        }
+        public static Transport Bicycle => All.Single(x => x.Type == TransportType.Bicycle);
     }
 }
