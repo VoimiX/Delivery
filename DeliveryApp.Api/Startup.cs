@@ -11,6 +11,7 @@ using DeliveryApp.Core.Application.UseCases.Queries.Courier.GetCouriesReadyBusy;
 using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
 using DeliveryApp.Core.DomainServices;
 using DeliveryApp.Core.Ports;
+using DeliveryApp.Infrastructure.Adapters.Grpc.GeoService;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using MediatR;
@@ -67,6 +68,7 @@ namespace DeliveryApp.Api
             // Ports & Adapters
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ICourierRepository, CourierRepository>();
+            services.AddTransient<IGeoServiceClient>(_ => new GeoServiceClient(geoServiceGrpcHost));
 
             // Domain Services
             services.AddTransient<IDispatchService, DispatchService>();
@@ -122,6 +124,9 @@ namespace DeliveryApp.Api
                 options.OperationFilter<GeneratePathParamsValidationFilter>();
             });
             services.AddSwaggerGenNewtonsoftSupport();
+
+            // gRPC
+            services.AddGrpcClient<GeoServiceClient>(options => { options.Address = new Uri(geoServiceGrpcHost); });
 
             //CRON Jobs
             services.AddQuartz(configure =>

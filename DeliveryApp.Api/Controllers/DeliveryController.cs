@@ -26,8 +26,7 @@ public class DeliveryController : DefaultApiController
 
         var response = await _mediator.Send(new CreateOrderCommand(
             Guid.NewGuid(),
-            locationX: rnd.Next(1, 10),
-            locationY: rnd.Next(1, 10),
+            address: "Айтишная",
             weight: rnd.Next(1, 8)
             ));
 
