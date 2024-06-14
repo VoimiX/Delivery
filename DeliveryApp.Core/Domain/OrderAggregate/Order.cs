@@ -1,5 +1,6 @@
 ﻿using DeliveryApp.Core.Domain.CourierAggregate;
 using DeliveryApp.Core.Domain.Exceptions;
+using DeliveryApp.Core.Domain.OrderAggregate.DomainEvents;
 using DeliveryApp.Core.Domain.SharedKernel;
 using Primitives;
 
@@ -20,6 +21,8 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
             Weight = weight;
 
             Status = OrderStatus.Created;
+
+            RaiseDomainEvent(new OrderCreatedDomainEvent(OrderId: id, Weight: weight.Kilograms));
         }
 
         public Guid? CourierId { get; private set; }
@@ -35,6 +38,8 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
             courier.SetStatus(CourierStatus.Busy);
             courier.SetOrder(this);
             CourierId = courier.Id;
+
+            RaiseDomainEvent(new OrderAssignedDomainEvent(OrderId: Id, CourierId: CourierId.Value));
         }
 
         public void Complete(Courier courier)
@@ -50,6 +55,8 @@ namespace DeliveryApp.Core.Domain.OrderAggregate
             CourierId = null;
             Status = OrderStatus.Completed;
             courier.SetStatus(CourierStatus.Ready);
+
+            RaiseDomainEvent(new OrderCompletedDomainEvent(OrderId: Id));
         }
     }
 }

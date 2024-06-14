@@ -24,7 +24,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, CreateOrde
 
         var createdOrder =  await _orderRepository.AddOrder(new Domain.OrderAggregate.Order
             (
-                request.Id, geoLocation, new Weight(request.Weight))
+                request.OrderId, geoLocation, new Weight(request.Weight))
             );
 
         await _unitOfWork.SaveEntitiesAsync();

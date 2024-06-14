@@ -11,6 +11,15 @@
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Adapters\Kafka\BasketConfirmed\Contract.proto" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Confluent.Kafka" Version="2.4.0" />
+	  <PackageReference Include="Google.Protobuf" Version="3.27.1" />
+	  <PackageReference Include="Grpc.Tools" Version="2.64.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,6 +39,10 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Adapters\Http\Contract\" />
-	  <Folder Include="Adapters\Kafka\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Protobuf Include="Adapters\Kafka\BasketConfirmed\Contract.proto">
+	    <GrpcServices>Client</GrpcServices>
+	  </Protobuf>
 	</ItemGroup>	
 </Project>

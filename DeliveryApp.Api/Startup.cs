@@ -2,6 +2,8 @@ using Api.Filters;
 using Api.Formatters;
 using Api.OpenApi;
 using DeliveryApp.Api.Adapters.BackgroundJobs;
+using DeliveryApp.Api.Adapters.Kafka.BasketConfirmed;
+using DeliveryApp.Core.Application.DomainEventHandlers;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.EndWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Courier.MoveToOrder;
@@ -9,9 +11,11 @@ using DeliveryApp.Core.Application.UseCases.Commands.Courier.StartWork;
 using DeliveryApp.Core.Application.UseCases.Commands.Order.CreateOrder;
 using DeliveryApp.Core.Application.UseCases.Queries.Courier.GetCouriesReadyBusy;
 using DeliveryApp.Core.Application.UseCases.Queries.Order.GetOrdersAssigned;
+using DeliveryApp.Core.Domain.OrderAggregate.DomainEvents;
 using DeliveryApp.Core.DomainServices;
 using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Grpc.GeoService;
+using DeliveryApp.Infrastructure.Adapters.Kafka.OrderEvents;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using MediatR;
@@ -22,6 +26,7 @@ using Newtonsoft.Json.Serialization;
 using Primitives;
 using Quartz;
 using System.Reflection;
+using static Confluent.Kafka.ConfigPropertyNames;
 
 namespace DeliveryApp.Api
 {
@@ -69,6 +74,7 @@ namespace DeliveryApp.Api
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<ICourierRepository, CourierRepository>();
             services.AddTransient<IGeoServiceClient>(_ => new GeoServiceClient(geoServiceGrpcHost));
+            services.AddTransient<IBusProducer>(_ => new OrderEventsProducer(messageBrokerHost));
 
             // Domain Services
             services.AddTransient<IDispatchService, DispatchService>();
@@ -127,6 +133,16 @@ namespace DeliveryApp.Api
 
             // gRPC
             services.AddGrpcClient<GeoServiceClient>(options => { options.Address = new Uri(geoServiceGrpcHost); });
+
+            // Domain Event Handlers
+            services.AddTransient<INotificationHandler<OrderAssignedDomainEvent>, OrderAssignedDomainEventHandler>();
+            services.AddTransient<INotificationHandler<OrderCreatedDomainEvent>, OrderCreatedDomainEventHandler>();
+            services.AddTransient<INotificationHandler<OrderCompletedDomainEvent>, OrderCompletedDomainEventHandler>();
+
+            // Message Broker
+            var sp = services.BuildServiceProvider();
+            var mediator = sp.GetService<IMediator>();
+            services.AddHostedService(x => new ConsumerService(mediator, messageBrokerHost));
 
             //CRON Jobs
             services.AddQuartz(configure =>
