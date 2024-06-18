@@ -3,6 +3,6 @@
 public class MoveToOrderResponse
 {
     public MoveToOrderResponse()
-    {        
+    {
     }
 }
