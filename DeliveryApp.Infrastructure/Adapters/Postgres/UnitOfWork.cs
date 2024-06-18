@@ -18,29 +18,11 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
     {
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        await PublishDomainEventsAsync();
         await SaveDomainEventsInOutboxEventsAsync();
 
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
         return true;
-    }
-
-    private async Task PublishDomainEventsAsync()
-    {
-        var domainEntities = _dbContext.ChangeTracker
-            .Entries<Aggregate>()
-            .Where(x => x.Entity.GetDomainEvents().Any());
-
-        var domainEvents = domainEntities
-            .SelectMany(x => x.Entity.GetDomainEvents())
-            .ToList();
-
-        domainEntities.ToList()
-            .ForEach(entity => entity.Entity.ClearDomainEvents());
-
-        foreach (var domainEvent in domainEvents)
-            await _mediator.Publish(domainEvent);
     }
 
     private async Task SaveDomainEventsInOutboxEventsAsync()

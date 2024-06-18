@@ -22,6 +22,7 @@ public class MoveToOrderHandler : IRequestHandler<MoveToOrderCommand, MoveToOrde
     {
         var couriesInWork = await _courierRepository.GetBusyCouriers();
 
+        bool saveState = false;
         foreach(var courier in couriesInWork)
         {
             var order = await _orderRepository.GetCourierOrder(courier.Id);
@@ -36,8 +37,13 @@ public class MoveToOrderHandler : IRequestHandler<MoveToOrderCommand, MoveToOrde
             }
 
             await _courierRepository.UpdateCourier(courier);
+            saveState = true;
         }
-        await _unitOfWork.SaveEntitiesAsync();
+
+        if (saveState)
+        {
+            await _unitOfWork.SaveEntitiesAsync();
+        }
 
         return new MoveToOrderResponse();
     }
