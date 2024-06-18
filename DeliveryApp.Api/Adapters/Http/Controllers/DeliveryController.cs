@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace DeliveryApp.Api.Controllers;
+namespace DeliveryApp.Api.Adapters.Http.Controllers;
 
 public class DeliveryController : DefaultApiController
 {
@@ -39,9 +39,9 @@ public class DeliveryController : DefaultApiController
 
         var apiCouries = response.Couriers.Select(c => new Courier
         {
-             Id = c.Id,
-             Location = new Location { X = c.Location.X, Y = c.Location.Y },
-             Name = c.Name,
+            Id = c.Id,
+            Location = new Location { X = c.Location.X, Y = c.Location.Y },
+            Name = c.Name,
         });
 
         return Ok(apiCouries);
@@ -53,8 +53,8 @@ public class DeliveryController : DefaultApiController
 
         var apiOrders = response.Orders.Select(o => new Order
         {
-             Id = o.Id,
-             Location = new Location { X = o.Location.X, Y = o.Location.Y }
+            Id = o.Id,
+            Location = new Location { X = o.Location.X, Y = o.Location.Y }
         });
 
         return Ok(apiOrders);

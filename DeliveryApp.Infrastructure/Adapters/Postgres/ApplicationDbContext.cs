@@ -2,6 +2,7 @@
 using DeliveryApp.Core.Domain.OrderAggregate;
 using DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.CourierAggregate;
 using DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.OrderAggregate;
+using DeliveryApp.Infrastructure.Adapters.Postgres.EntityConfigurations.Outbox;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryApp.Infrastructure.Adapters.Postgres;
@@ -22,6 +23,9 @@ public class ApplicationDbContext : DbContext
 
         // Courier Aggregate
         modelBuilder.ApplyConfiguration(new CourierEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new TransportEntityTypeConfiguration());       
+        modelBuilder.ApplyConfiguration(new TransportEntityTypeConfiguration());
+
+        // Outbox
+        modelBuilder.ApplyConfiguration(new OutboxEntityTypeConfiguration());
     }
 }
