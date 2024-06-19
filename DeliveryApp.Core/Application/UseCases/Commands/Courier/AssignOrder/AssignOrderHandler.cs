@@ -29,6 +29,7 @@ public class AssignOrderHandler : IRequestHandler<AssignOrderCommand, AssignOrde
         var orders = await _orderRepository.GetOrdersNew();
         var couriers = (await _courierRepository.GetFreeCouriers()).ToList();
 
+        bool saveState = false;
         foreach(var order in orders)
         {
             if (couriers.Count == 0) break;
@@ -36,12 +37,17 @@ public class AssignOrderHandler : IRequestHandler<AssignOrderCommand, AssignOrde
             var bestCourier = await _dispatchService.Dispatch(order, couriers);
             if (bestCourier == null) continue; // этот заказ пока никто не может взять
 
+            saveState = true;
             await _courierRepository.UpdateCourier(bestCourier);
             await _orderRepository.UpdateOrder(order);
 
             couriers.Remove(bestCourier); // удаляем из списка доступных курьеров
         }
-        await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+
+        if (saveState)
+        {
+            await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+        }
 
         return new AssignOrderResponse();
     }

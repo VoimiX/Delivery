@@ -1,8 +1,7 @@
 ﻿using MediatR;
 
-namespace DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder
+namespace DeliveryApp.Core.Application.UseCases.Commands.Courier.AssignOrder;
+
+public class AssignOrderCommand : IRequest<AssignOrderResponse>
 {
-    public class AssignOrderCommand : IRequest<AssignOrderResponse>
-    {
-    }
 }

@@ -17,6 +17,7 @@ using DeliveryApp.Core.Ports;
 using DeliveryApp.Infrastructure.Adapters.Grpc.GeoService;
 using DeliveryApp.Infrastructure.Adapters.Kafka.OrderEvents;
 using DeliveryApp.Infrastructure.Adapters.Postgres;
+using DeliveryApp.Infrastructure.Adapters.Postgres.BackgroudJobs;
 using DeliveryApp.Infrastructure.Adapters.Postgres.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -60,7 +61,7 @@ namespace DeliveryApp.Api
                         policy.AllowAnyOrigin(); // Не делайте так в проде!
                     });
             });
-            
+
             // Configuration
             services.Configure<Settings>(options => Configuration.Bind(options));
             var connectionString = Configuration["CONNECTION_STRING"];
@@ -149,6 +150,8 @@ namespace DeliveryApp.Api
             {
                 var assignOrdersJobKey = new JobKey(nameof(AssignOrdersJob));
                 var moveCouriersJobKey = new JobKey(nameof(MoveCouriersJob));
+                var processOutboxMessagesJobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
                 configure
                     .AddJob<AssignOrdersJob>(assignOrdersJobKey)
                     .AddTrigger(
@@ -156,12 +159,21 @@ namespace DeliveryApp.Api
                             .WithSimpleSchedule(
                                 schedule => schedule.WithIntervalInSeconds(5)
                                     .RepeatForever()))
+
                     .AddJob<MoveCouriersJob>(moveCouriersJobKey)
                     .AddTrigger(
                         trigger => trigger.ForJob(moveCouriersJobKey)
                             .WithSimpleSchedule(
                                 schedule => schedule.WithIntervalInSeconds(3)
-                                    .RepeatForever()));
+                                    .RepeatForever()))
+
+                    .AddJob<ProcessOutboxMessagesJob>(processOutboxMessagesJobKey)
+                    .AddTrigger(
+                        trigger => trigger.ForJob(processOutboxMessagesJobKey)
+                        .WithSimpleSchedule(
+                            schedule => schedule.WithIntervalInSeconds(5)
+                                .RepeatForever()));
+
                 configure.UseMicrosoftDependencyInjectionJobFactory();
             });
             services.AddQuartzHostedService();
